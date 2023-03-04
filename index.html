@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<!-- 页面内容缓存清理在HTML的head标签里添加如下代码即可 https://blog.csdn.net/jiuyisir/article/details/104942842-->
+<!-- <meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache"> -->
+
+<head>
+
+  <!-- Head头 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  <!--js和css文件缓存清理-->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/themes/vue.css" type="text/javascript" charset="utf-8"></script> -->
+
+  <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+      title="vue"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css"
+      title="dark"
+      disabled
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/buble.css"
+      title="buble"
+      disabled
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/pure.css"
+      title="pure"
+      disabled
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dolphin.css"
+      title="dolphin"
+      disabled
+    />
+
+    <style>
+      nav.app-nav li ul {
+        min-width: 100px;
+      }
+
+      #carbonads {
+        box-shadow: none !important;
+        width: auto !important;
+      }
+    </style>
+
+</head>
+
+<body>
+
+  <!-- 加载显示 -->
+  <div data-app id="app">Loading...</div>
+
+
+
+  <script>
+
+    // 内容
+    window.$docsify = {
+
+      // loadNavbar: 'nav.md',//加载自定义导航栏
+      // loadSidebar: 'sidebar.md',//加载自定义侧边栏
+      //loadSidebar: true,//加载自定义侧边栏
+      subMaxLevel: 5,
+      // alias: {//不跳转
+      //   '/.*/_sidebar.md': '/_sidebar.md'
+      // }
+      // 改变背景颜色
+      // el: '#app',
+
+      //repo: 'http://127.0.0.1:8001/',//右上角的图标的链接
+      // maxLevel: 5,//默认情况下会抓取文档中所有标题渲染成目录，可配置最大支持渲染的标题层级。
+      // coverpage: false,//是否开启背景
+        
+    }
+
+    
+
+  </script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <!--js和css文件缓存清理-->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js" type="text/javascript" charset="utf-8"></script> -->
+
+
+
+</body>
+
+</html>
