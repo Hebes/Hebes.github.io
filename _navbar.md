@@ -14,7 +14,7 @@
   * [Markdown 配置](zh-cn/markdown.md)
   * [代码高亮](zh-cn/language-highlight.md)
 
-- Translations
+<!-- - Translations
   - [:uk: English](/)
   - [:cn: 简体中文](/zh-cn/)
   - [:de: Deutsch](/de-de/)
@@ -22,4 +22,4 @@
   - [:ru: Русский](/ru-ru/)
 
 * [:us:, :uk:](/)
-* [:cn:](/zh-cn/)
+* [:cn:](/zh-cn/) -->
