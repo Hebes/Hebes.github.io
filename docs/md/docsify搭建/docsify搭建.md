@@ -1,5 +1,3 @@
-<!-- # docsify搭建 -->
-<!-- # <center>docsify搭建</center> -->
 <h1 style="text-align:center">docsify搭建</h1>
 
 ![docsify](./../../Image/微信截图_20230305095027.png)
@@ -8,11 +6,13 @@
 
 **[源码下载](<https://github.com/docsifyjs/docsify/>)**
 
-**参考网站:**
+## 参考网站
 
 **[官方网站](<https://docsify.js.org/#/zh-cn/>)**
 
 **[官方推荐:文档化主题](<https://jhildenbiddle.github.io/docsify-themeable/#/>)**
+
+**[docsify的配置+全插件列表](<https://xhhdd.cc/index.php/archives/80/>)**
 
 **[部署](<http://127.0.0.1:8001/#/zh-cn/deploy?id=%e9%83%a8%e7%bd%b2>)**
 

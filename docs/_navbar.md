@@ -1,20 +1,20 @@
-* [返回主页](/README.md)
+* [返回主页](/md/README.md)
   
 * 传送门
 
-  * [返回主页](/README.md)
+  * [返回主页](/md/README.md)
   * [返回首页](<https://hebes.github.io/#/>)
   
 * 切换主题
   
-  * [切换主题](切换主题.md)
+  * [切换主题](/md/切换主题.md)
 
 * 目录列表
   
-  * [自述文件](README.md)
+  <!-- * [自述文件](README.md)
   * [切换主题](切换主题.md)
   * [docsify搭建](md/docsify搭建/docsify搭建.md)
-  * [MD文档](md/MD文档/MD文档.md)
+  * [MD文档](md/MD文档/MD文档.md) -->
 
 <!-- * 入门 -->
 

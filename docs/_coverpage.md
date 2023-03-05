@@ -16,7 +16,7 @@
 
 <!-- 下面这个不会动 -->
 [GitHub](https://github.com/Hebes)
-[Get Started](README.md)
+[Get Started](/md/README.md)
 <!-- [Get Started](README.md) -->
 <!-- docsify -->
 
