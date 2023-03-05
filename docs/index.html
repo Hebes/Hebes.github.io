@@ -7,13 +7,20 @@
   <meta charset="UTF-8">
   <title>暗沉の笔记</title>
   <link rel="icon" href="/Image/WebsiteTitle.png" />
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+
+  <!-- 主题 -->
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css"> -->
+  <!-- Theme: Simple Dark -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"> -->
+  <!-- Theme: Simple -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css"> -->
+
 
   <!-- 页面内容缓存清理在HTML的head标签里添加如下代码即可 https://blog.csdn.net/jiuyisir/article/details/104942842-->
-  <!-- <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Expires" content="0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Cache-control" content="no-cache">
-  <meta http-equiv="Cache" content="no-cache"> -->
+  <meta http-equiv="Cache" content="no-cache">
 
   <!-- HTML <meta> name 属性:https://www.runoob.com/tags/att-meta-name.html -->
   <!-- <meta name="google-site-verification" content="6t0LoIeFksrjF4c9sqUEsVXiQNxLp2hgoqo0KryT-sE" />
@@ -141,9 +148,16 @@
         '/': '#/',
       },
 
+
+      // name: '返回主目录',
+      // nameLink: {
+      //   '/': './',
+      // },
+
       // 查找
       search: {
-        maxAge: 86400000,//过期时间,单位毫秒,默认一天
+        //maxAge: 86400000,//过期时间,单位毫秒,默认一天
+        maxAge: 86,//过期时间,单位毫秒,默认一天
         noData: {
           // '/es/': '¡No hay resultados!',
           // '/de-de/': 'Keine Ergebnisse!',
@@ -159,11 +173,106 @@
           // '/zh-cn/': '搜索',
           '/': '搜索',//Search
         },
-        depth: 6,
-        // pathNamespaces: ['/es', '/de-de', '/ru-ru', '/zh-cn'],// http://www.manongjc.com/detail/64-exhplujncgnglfi.html
+        // 使用不同的索引作为路径前缀（namespaces）
+        // 注意：仅适用于 paths: 'auto' 模式
+        //
+        // 初始化索引时，我们从侧边栏查找第一个路径
+        // 如果它与列表中的前缀匹配，我们将切换到相应的索引
+        depth: 100,
+        // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
+        // 匹配到的字符串将被用来识别索引
+        //pathNamespaces: ['/es', '/de-de', '/ru-ru', '/zh-cn'],// http://www.manongjc.com/detail/64-exhplujncgnglfi.html
       },
 
-    }
+      //字数统计 请再本HtML搜索countable.js
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese'
+      },
+
+      //文档化页脚
+      // footer: {
+      //   copy: '<span>Acme &copy; 2020</span>',
+      //   auth: 'by Me',
+      //   pre: '<hr/>',
+      //   style: 'text-align: right;',
+      //   class: 'className',
+      // },
+
+      // 为每个 docsify 降价添加更新时间
+      // timeUpdater: {
+      //   text: ">最后更新时间: {docsify-updated}",
+      //   formatUpdated: "{YYYY}/{MM}/{DD}",
+      //   whereToPlace: "bottom",  // "top" or "bottom", default to "bottom"
+      // },
+      timeUpdater: {
+        text: "<div align='center' width='200px' style='color:gray;font-size:10px'>-------------- 最后更新时间:&emsp;{docsify-updated} --------------</div>",
+        formatUpdated: "{YYYY} 年 {MM} 月 {DD} 日",
+      },
+
+      // 创建并注册全局Vue 组件。组件是使用组件名称作为键并使用包含 Vue 选项的对象作为值来指定的。组件data对于每个实例都是唯一的，并且不会随着用户浏览站点而持续存在。
+      // https://github.com/docsifyjs/docsify/blob/master/docs/configuration.md
+      vueComponents: {
+        'button-counter': {
+          template:
+            '<button @click="count += 1">You clicked me {{ count }} times</button>',
+          data: function () {
+            return {
+              count: 0,
+            };
+          },
+        },
+      },
+      //指定Vue 选项以用于未使用vueMounts、vueComponents或markdown 脚本显式安装的 Vue 内容。对全局的更改data将持续存在并反映在使用全局引用的任何地方。
+      // https://github.com/docsifyjs/docsify/blob/master/docs/configuration.md
+      vueGlobalOptions: {
+        data: function () {
+          return {
+            count: 0,
+            message: 'Hello, World!',
+            // Fake API response
+            images: [
+              { title: 'Image 1', url: 'https://picsum.photos/150?random=1' },
+              { title: 'Image 2', url: 'https://picsum.photos/150?random=2' },
+              { title: 'Image 3', url: 'https://picsum.photos/150?random=3' },
+            ],
+          };
+        },
+        computed: {
+          timeOfDay: function () {
+            const date = new Date();
+            const hours = date.getHours();
+
+            if (hours < 12) {
+              return 'morning';
+            } else if (hours < 18) {
+              return 'afternoon';
+            } else {
+              return 'evening';
+            }
+          },
+        },
+        methods: {
+          hello: function () {
+            alert(this.message);
+          },
+        },
+      },
+
+      vueMounts: {
+        '#counter': {
+          data: function () {
+            return {
+              count: 0,
+            };
+          },
+        },
+      },
+
+
+    };
 
 
 
@@ -173,7 +282,7 @@
 
   <!-- docsify-plug - Carbon -一个插件，让您轻松添加碳广告docsify。https://docsify.js.org/#/zh-cn/awesome?id=plugins https://github.com/waruqi/docsify-plugin-carbon -->
   <script src="//cdn.jsdelivr.net/npm/docsify-plugin-carbon@1"></script>
-  
+
   <!-- 查找用插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
 
@@ -183,8 +292,34 @@
   <!-- 字数统计插件 -->
   <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
 
+  <!-- 文档化页脚 -->
+  <!-- <script src="//unpkg.com/docsify-footer-enh/dist/docsify-footer-enh.min.js"></script> -->
+
+  <!-- 为每个 docsify 降价添加更新时间 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-updated/src/time-updater.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-updated/src/time-updater.js"></script>
+
+  <!-- 图片放大缩小支持 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+
+  <!-- emoji表情支持 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+
+  <!-- Docsify v4 -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify@4"></script> -->
+  <!-- 代码块copy功能 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <!-- 语法高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <!-- 分页 -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script> -->
+  <!-- <script src="//unpkg.com/docsify/lib/plugins/emoji.js"></script> -->
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-nginx.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>

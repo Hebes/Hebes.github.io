@@ -1,3 +1,6 @@
+<!-- 主题页 -->
+
+
 <!-- https://docsify.js.org/#/zh-cn/cover 配置看这边 -->
 <!-- 壁纸需要修改 -->
 <!-- ![logo](/Image/Icon.svg) -->
@@ -13,8 +16,8 @@
 
 <!-- 下面这个不会动 -->
 [GitHub](https://github.com/Hebes)
-[Get Started](#暗沉の笔记)
-[Get Started](/README.md)
+[Get Started](README.md)
+<!-- [Get Started](README.md) -->
 <!-- docsify -->
 
 <!-- ![1111](/Image/BG琉璃神社壁纸包%202020年1月号03.jpg) -->
