@@ -1,7 +1,7 @@
-# docsify搭建
+<!-- # docsify搭建 -->
 <!-- # <center>docsify搭建</center> -->
 
-<!-- <h1 style="text-align:center">docsify搭建</h1> -->
+<h1 style="text-align:center">docsify搭建</h1>
 
 ![docsify](./../../Image/微信截图_20230305095027.png)
 
