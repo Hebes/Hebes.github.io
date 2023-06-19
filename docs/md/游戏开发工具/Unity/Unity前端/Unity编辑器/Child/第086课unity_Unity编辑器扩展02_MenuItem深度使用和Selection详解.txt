@@ -1,0 +1,264 @@
+00a)为什么要自己定制Unity的编辑器？
+答：因为获得场景中的游戏物体或脚本
+this.gameObject.Find<xxx>
+this.gameObject.GetComponent<XXXX>() 
+等等。这种方法当然可以获取到所有的游戏物体或脚本，但是
+如果一个场景中有太多的游戏物体，那么获取到这些游戏物体gameObject将是一个
+体力活，没有任何的技术含量，所以我们可以通过一个工具（编辑器的扩展）
+来帮我们自动的完成生成对应的脚本或一些可以自动执行的工作
+
+
+00b) Unity工具是通过C#语言的 “特性” Attributes 来完成的
+[] 中括号语法
+利用了C#语言的反射和依赖注入特征来完成的一个语法功能
+
+00c）Unity 对于目录的命名有一些是保留的，如Editor
+
+
+https://docs.unity3d.com/ScriptReference/MenuItem-ctor.html
+https://docs.unity3d.com/ScriptReference/MenuItem.html
+
+
+
+
+1.MenuItem
+注意事项: MenuItem的函数必须是静态（static）函数
+
+第1个参数：用类Unix的path路径分隔方式来表示的菜单，可以设置为多级菜单
+快捷键
+% (ctrl on Windows, cmd on macOS), # (shift), & (alt).
+"MyMenu/Do Something _g"   快捷键g,字母签名添加下划线
+ "#LEFT" would map to shift+ left. 其他的一个键的支持情况: LEFT, RIGHT, UP, DOWN, F1 .. F12, HOME, END, PGUP, PGDN.
+ 快捷键和前面必须加入空格，否则无效 ("MyMenu/Do_g" won't be interpreted as hotkey, while "MyMenu/Do _g" will).
+_w 单一的快捷键 W   
+#w shift+w   
+%w ctrl+w   
+&w Alt+w
+
+第2个参数 true和false，控制菜单的是否被激活（在某种条件下）
+
+如果MenuItem的第2个参数设置为了true
+那么函数的返回值如果返回true，则本菜单被高亮激活
+如果返回值为false，本菜单就灰色，不可以被点击
+
+通常都是通过2个函数来完成的：
+1）菜单的名称必须完全一致
+2) 第1个函数的第2个参数必须是false或不写（因为默认值就是false），第2个函数的第2个参数必须是true
+3) 第2个函数的返回值必须是bool类型：如果函数的返回值如果返回true，则本菜单被高亮激活
+如果返回值为false，本菜单就灰色，不可以被点击
+4）2个函数必须都是static函数，但是函数名称可以不一致
+
+
+class SelectionActiveTransform : ScriptableObject {
+    
+	[MenuItem ("Example/Duplicate at Origin _d")]
+    static void DuplicateSelected() {
+        Instantiate(Selection.activeTransform, Vector3.zero, Quaternion.identity);
+    }
+
+    //The menu item will be disabled if nothing, is selected.
+    [MenuItem ("Example/Duplicate at Origin _d", true)]
+    static bool ValidateSelection() {
+        return Selection.activeTransform != null;		//Selection.activeTransform表示被选中的对象是一个激活的游戏物体
+    }
+}
+第3个参数：控制菜单的显示上下的顺序
+值越小越在上面显示，默认的优先级为1000
+如果想要系统添加下划线，相邻的2个菜单的优先级的大小要超过 >=11
+
+
+
+
+
+
+
+
+
+
+++++++++++++++++++第2节内容课堂笔记+++++++++++++++++++++++++
+	
+Project 视图右键添加菜单：同Assets菜单
+我们只要将MenuItem添加到Assets菜单中会自动的添加我们的Project 视图
+的右键菜单中
+    [MenuItem("Assets/Assets中添加右键菜单")]
+
+
+Hierachry层级视图添加右键：同GameObjet
+	[MenuItem("GameObject/GameObject菜单")]
+	
+	// Add a menu item to create custom GameObjects.
+    // Priority 1 ensures it is grouped with the other menu items of the same kind
+    // and propagated to the hierarchy dropdown and hierarch context menus.
+    [MenuItem("GameObject/MyCategory/Custom Game Object", false, 10)]
+    static void CreateCustomGameObject(MenuCommand menuCommand)
+    {
+        // Create a custom game object
+        GameObject go = new GameObject("Custom Game Object");		//创建一个新的游戏物体
+        // Ensure it gets reparented if this was a context click (otherwise does nothing)
+		//menuCommand.context是当前鼠标左键选中的GameObjet游戏物体，通过GameObjectUtility.SetParentAndAlign
+		//函数设置为新创建的go物体的父节点
+        GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+		
+        // Register the creation in the undo system；注册到U3D的Undo系统中
+        Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+		
+        Selection.activeObject = go;		//将鼠标的选中物体自动的移动到刚刚创建的go物体上
+    }
+
+场景视图：后续讲解
+
+属性Inspector视图：
+	MenuItem("CONTEXT/脚本名称/菜单名称")
+	或者后面讲解的ContextMenu：：
+	
+	注意区分大小写
+	
+	
+	
+	
+	
+2.	
+MenuCommand：
+MenuCommand 表示当前正在操作的组件
+通过context 属性获取到 对应的脚本对象或游戏物体GameObject
+	    // Add menu item
+    [MenuItem("CONTEXT/Rigidbody/Do Something")]
+    static void DoSomething(MenuCommand command)
+    {
+       // Rigidbody body = (Rigidbody)command.context;
+       Rigidbody body = (Rigidbody)command.context as  Rigidbody;
+        body.mass = 5;
+        Debug.Log("Changed Rigidbody's Mass to " + body.mass + " from Context Menu...");
+    }
+	
+
+
+
+ContextMenu：属性面板中添加一个右键菜单，功能可以通过MenuItem("COMTEXT/组件名称/右键菜单完成")
+函数必须是 非静态的函数
+using UnityEngine;
+
+public class ContextTesting : MonoBehaviour
+{
+    /// Add a context menu named "Do Something" in the inspector
+    /// of the attached script.
+    [ContextMenu ("Do Something")]
+    void DoSomething ()
+    {
+        Debug.Log ("Perform operation");
+    }
+}
+与MenuItem的区别是，MenuItem是写在另外的脚本中，而ContextMenu是写在当前脚本的；MenuItem的好处是可以通过通用的方式
+public ContextMenu(string itemName);
+public ContextMenu(string itemName, bool isValidateFunction);
+public ContextMenu(string itemName, bool isValidateFunction, int priority);   默认值1000000，越小，越在上面显示
+https://docs.unity3d.com/ScriptReference/ContextMenu-ctor.html
+
+注意：继承MonoBehaviour的类 最好不要放到Editor目录中，否则不能添加到GameObjet上
+
+
+
+
+
+
+
+
+ContextMenuItemAttribute
+
+https://docs.unity3d.com/ScriptReference/ContextMenuItemAttribute.html
+public ContextMenuItemAttribute(string name  菜单名称, string function 函数地址/函数名称);
+using UnityEngine;
+using System.Collections;
+
+public class ExampleClass : MonoBehaviour {
+    [ContextMenuItem("Reset", "ResetBiography")]
+    [Multiline(8)]
+    public string playerBiography = "";
+    void ResetBiography() {
+        playerBiography = "";
+    }
+}
+ContextMenuItem 使用的时候，需要用这个特性来写代码
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++=
+AddComponentMenu：	
+
+using UnityEngine;
+
+[AddComponentMenu("Transform/Follow Transform")]
+public class FollowTransform : MonoBehaviour
+{
+}
+
+https://docs.unity3d.com/ScriptReference/AddComponentMenu-ctor.html
+允许将我们的脚本添加到Component菜单的定制位置，而不是"Component->Scripts-->xxxx" ，
+如NGUI就利用了这个特效，防止一堆的cs脚本代码
+public AddComponentMenu(string menuName);
+public AddComponentMenu(string menuName, int order);
+特例: menuName为空，则菜单中将 隐藏此脚本的显示
+	
+	
+	
+3.
+UnityEditor的Selection类
+https://docs.unity3d.com/ScriptReference/Selection.html
+
+Selection
+Selection类是编辑器类，使用需要using UnityEditor;且脚本要放在Editor文件夹。
+
+
+静态变量：
+
+Selection.activeGameObject //返回当前点击的场景游戏物体或Project预制体；选择多个则返回第一个选择的；未选择相应的则返回null  
+Selection.activeTransform //返回当前点击的场景游戏物体；选择多个则返回第一个选择的；未选择相应的则返回null  
+Selection.activeObject  //返回当前点击的场景游戏物体或Project资源(包括场景、脚本、预制等任意);选择多个则返回第一个选择的；未选择相应的则返回null  
+  
+Selection.gameObjects //返回一个数组，内容为当前点击的场景物体或Project预制体；不符合条件的当前选择不会加入到数组；为选择返回长度为0的数组而不是null  
+Selection.transforms //返回一个数组，内容为当前点击的场景物体；不符合条件的当前选择不会加入到数组；为选择返回长度为0的数组而不是null  
+Selection.objects  //返回一个数组，内容为当前点击的场景物体或Project资源(包括场景、脚本、预制等任意);不符合条件的当前选择不会加入到数组；为选择返回长度为0的数组而不是null  
+
+Selection.selectionChanged //委托，选择的东西变化的时候调用  
+
+静态函数
+///Contains:选择项中是否包含物体  
+bool Selection.Contains(int instanceID)  
+bool Selection.Contains(Object obj)  
+  
+///GetFiltered:返回按类型和模式过滤的当前选择。  
+///对于一个具有多个类型组件的选定的游戏对象，只有第一个组件将包含在结果中。  
+///如果类型是Component或GameObject的子类，则支持完整的SelectionMode。  
+///如果类型不是Component或GameObject的子类,(例如：网格或脚本对象)则只支持有SelectionMode.ExcludePrefab和SelectionMode.Editable 。  
+Object[] activeGos= Selection.GetFiltered( GameObject,SelectionMode.Editable | SelectionMode.TopLevel);  
+  
+///GetTransforms:允许使用SelectionMode对选择类型进行细粒度的控制。  
+Transform[]  selectionObjs=  Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.Editable);  
+
+关于SelectionMode ：https://docs.unity3d.com/ScriptReference/SelectionMode.html
+
+Unfiltered  返回整个选择  
+TopLevel  只返回最上面选择的transform。另一个选定的transform的选定子物体将被过滤掉。  
+Deep  返回选择的物体和它所有的子代  
+ExcludePrefab  排除选择里的所有预制体
+Editable  排除任何不被修改的对象。
+Assets  只返回Asset文件夹的资源  
+DeepAssets  如果选择里包含文件夹，则也包括文件夹里的文件和子文件夹。  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

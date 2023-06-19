@@ -1,0 +1,9 @@
+# 静态资源优化-ModelMesh优化
+
+Unity优化-Model/Mesh相关通过控制选项进行部分优化
+
+![](https://i3.wp.com/img-blog.csdnimg.cn/20190404173559807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0h0bGFz,size_16,color_FFFFFF,t_70)
+
+### **Model/Mesh相关**
+
+<table><tbody><tr><td>MeshCompression</td><td>mesh压缩，分成高中低三档，如果开启有可能导致Mesh变形</td><td>使用时最好让Mesh看上去没变太多</td></tr><tr><td>Read/Write Enable</td><td>unity会把mesh数据传给GPU，如果开启Read/Write，CPU也会保存一份Mesh数据，开启Read/Write可以在运行时获取Mesh的数据、或者在程序中生成Mesh数据</td><td>建议不开启<br>如果需要在游戏中合并Mesh、使用Mesh烘焙NavMesh、或者是使用MeshCollider时的部分情况</td></tr><tr><td>OptimizeMesh</td><td>Unity来对Mesh的三角形排列进行优化，重新排序顶点和索引来提升GPU表现</td><td>看样子可以开启</td></tr><tr><td>Import BlendShapes</td><td>导入Mesh上的BlendShapes</td><td>对于一些细微的表情等动作，使用骨骼有点过于复杂和浪费，可以预先设计几张表情，然后通过BlendShape来进行表情的过渡。目前看来我们不需要</td></tr><tr><td>Generate Collider</td><td>如果开启时，Mesh导入时会自动生成MeshCollider，这个比较适合环境中静态的物体，不适合那些有动作形变的物体</td><td>人物模型不适合开启，建筑模型合适</td></tr><tr><td>Keep Quads</td><td>开启时，unity会保留Mesh上的多边形，如果关闭unity会把多边形转化为三角形</td><td></td></tr><tr><td>Index Format</td><td>Mesh索引缓存的大小</td><td>16bit/32bit</td></tr><tr><td>Weld Vertices</td><td>合并处于同一位置的顶点，这样可以整体减少mesh的顶点数。</td><td>开启就完了</td></tr><tr><td>Import Visibility</td><td>Fbx的Visibility对应MeshRenderer的enable属性，动画可以控制Visibility来显示或隐藏某个MeshRenderer。</td><td>开启就完了</td></tr><tr><td>Import Cameras/Import Lights</td><td>unity可以直接导入Fbx上的相机和灯光的参数，我们fbx上没有做这些，如果需要做一些展示的效果，比如动画信息中包含相机和灯光的动画，不需要开启</td><td></td></tr><tr><td>Preserve Hierarchy</td><td>当有多个fbx文件，每个文件可能只需要部分骨骼节点，如果不勾选，可能会导致骨骼对不上</td><td>开启就完了</td></tr><tr><td>Swap uvs</td><td>这个选项只能交换第一套和第二套uv，如果导入的模型uv混乱可以试着勾选一下，如果fbx上有更多套uv，可能得通过代码来控制了</td><td></td></tr><tr><td>Generate LightMap Uvs</td><td>为光照贴图创建第二条UV channel</td><td></td></tr><tr><td>Normals&amp;Tangents</td><td>导入模型时，可以选择直接导入模型中的法线和切线、也可以选择使用unity自动计算法线和切线、也可以不导入法线和切线。</td><td>具体的参数，不太懂，如果美术资源提供了法线和切线、直接import就行了</td></tr><tr><td></td><td></td><td></td></tr></tbody></table>

@@ -1,0 +1,209 @@
+课前补充. 快速显示一个“模态”对话框
+https://docs.unity3d.com/ScriptReference/EditorUtility.html
+“模态”:模态对话框（Modal Dialogue Box，又叫做模式对话框），是指在用户想要对对话框以外的应用程序进行操作时，
+必须首先对该对话框进行响应。如单击【确定】或【取消】按钮等将该对话框关闭。一般来说，Windows应用程序中，
+对话框分为模态对话框和非模态对话框两种。二者的区别在于当对话框打开时，是否允许用户进行其他对象的操作。
+
+EditorUtility.DisplayDialog(string title, string message, string ok, string cancel = "");
+如果OK键被点击，将返回true 否则返回false
+
+using UnityEngine;
+using UnityEditor;
+
+public class MyEditorUtilityTest : ScriptableObject
+{
+    [MenuItem("bycw/自定义对话框")]
+    static void CreateWizard()
+    {
+        if (EditorUtility.DisplayDialog("对话框标题", "对话框的消息", "OK", "取消"))
+        {
+            Debug.Log("OK被点击");
+        }
+        else
+        {
+            Debug.Log("您没有点击OK");
+        }
+    }
+}
+
+
+
+其他的请参考 《EditorUtility编辑器工具.docx》  文档
+
+
+1.
+[InitializeOnLoad]
+https://docs.unity3d.com/Manual/RunningEditorCodeOnLaunch.html
+https://docs.unity3d.com/ScriptReference/InitializeOnLoadAttribute.html
+编辑器自动运行一段代码，
+
+using UnityEngine;
+using UnityEditor;
+
+[InitializeOnLoad]
+public class Startup {
+    static Startup()
+    {
+        Debug.Log("Up and running");
+    }
+}
+
+让我们的Editor类每秒运行多次的一种方法，通过Update实现
+using UnityEditor;
+using UnityEngine;
+
+[InitializeOnLoad]
+class MyClass
+{
+    static MyClass ()
+    {
+        EditorApplication.update += Update;
+    }
+
+    static void Update ()
+    {
+        Debug.Log("Updating");
+    }
+}
+
+自动调用某一个函数的实现方式
+InitializeOnLoadMethodAttribute
+https://docs.unity3d.com/ScriptReference/InitializeOnLoadMethodAttribute.html
+
+
+using UnityEngine;
+using UnityEditor;
+
+class MyClass
+{
+    [InitializeOnLoadMethod]
+    static void OnProjectLoadedInEditor()
+    {
+        Debug.Log("Project loaded in Unity Editor");
+    }
+}
+
+
+2.
+HideInInspector
+属性面板中隐藏相关的属性
+https://docs.unity3d.com/ScriptReference/HideInInspector.html
+
+using UnityEngine;
+using System.Collections;
+
+public class ExampleClass : MonoBehaviour {
+    [HideInInspector]
+    public int p = 5;
+}
+
+
+3
+Tooltip
+https://docs.unity3d.com/ScriptReference/TooltipAttribute.html
+鼠标放到属性上的时候，会自动提示帮助/提示信息
+Tooptip（）属性用于在 Inspector 面板中，当鼠标停留在设置了Tooptip（）的属性添加指定的提示；
+
+
+using UnityEngine;
+using System.Collections;
+
+public class ExampleClass : MonoBehaviour {
+    [Tooltip("Health value between 0 and 100.")]
+    public int health = 0;
+}
+	
+	
+4.	
+Range
+Range（）属性用于将一个值指定在一定的范围内，并在Inspector面板中为其添加滑块；
+https://docs.unity3d.com/ScriptReference/RangeAttribute.html
+
+	float or int 属性面板中显示一个 slider，控制输入的范围
+	public RangeAttribute(float min, float max);
+	
+	
+	
+5.
+RequireComponent()
+https://docs.unity3d.com/ScriptReference/RequireComponent.html
+RequireComponent属性会“自动”帮你添加你需要（依赖）的组件，如果已经存在则不再重复添加，且不能移除	
+	
+提示：经过测试，发现一个问题，如果脚本已经挂在物体身上，然后再修改脚本，
+为添加 RequireComponent 属性的话，完全不起作用，因此建议大家在用此属性的时候要注意。
+	
+	
+6.
+ContextMenu（）
+https://docs.unity3d.com/ScriptReference/ContextMenu.html
+ContextMenu（）属性允许添加一个命令到该组件上，你可以通过右键或者点击设置图标来调用到它（一般用于函数），且是在非运行状态下执行该函数，如下所示：
+	
+7
+HelpURL（）
+https://docs.unity3d.com/ScriptReference/HelpURLAttribute.html
+HelpURL（）提供一个自定义的文档链接，点击组件上的文档图标既能打开到你指定的链接
+提示：填写链接时，一定要写上 http:// 或者 https://，否则将无任何反应。
+	
+	
+	
+8.	
+Multiline（）、Header（）
+https://docs.unity3d.com/ScriptReference/MultilineAttribute.html
+https://docs.unity3d.com/ScriptReference/HeaderAttribute.html
+Multiline（）属性用于给 string 类型添加多行输入；
+Header（）属性用于添加属性的标题	
+
+[Header("BaseInfo")]
+[Multiline(5)]
+public string name;
+[Range(-2,2)]
+public int age;
+
+
+
+使用了 [Header("BaseInfo")] 为其设置了标题（为“BaseInfo”）
+使用了 [Multiline(5)] 为其 name 属性添加了5行输入，明显输入框变大了。
+使用了 [Range(-2,2)] 为其 age 属性指定了一个（-2，2）的范围，并且为其添加了一个滑块
+
+
+9.
+Space（）
+Space（）用于为在 Inspector 面板 两属性之间添加指定的距离，如下所示：	
+
+https://docs.unity3d.com/ScriptReference/SpaceAttribute.html
+
+[Header("BaseInfo")]
+[Multiline(5)]
+public string name;
+[Range(-2,2)]
+public int age;
+
+[Space(100)]
+[ToolTip("用于设置性别")]
+public string sex;
+
+
+
+
+10.
+Gizmos: 如用Gizmos画出一个圆形
+编辑器之[System.Serializable]
+Unity编辑器中Status窗口详解
+Handles:
+https://docs.unity3d.com/ScriptReference/Handles.html
+https://docs.unity3d.com/ScriptReference/HandleUtility.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

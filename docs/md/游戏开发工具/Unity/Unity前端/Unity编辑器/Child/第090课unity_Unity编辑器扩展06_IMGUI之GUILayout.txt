@@ -1,0 +1,21 @@
+1. IMGUI = Immediate Mode GUI 
+https://docs.unity3d.com/Manual/gui-Layout.html
+https://docs.unity3d.com/ScriptReference/GUILayout.html
+固定布局和绝对布局
+
+有2点不同:
+1）GUILayout 被用来代替GUI系统的
+2）自动布局控件 不需要Rect()函数来进行定位了
+
+
+
+void OnGUI() {
+	if (GUILayout.Button("Press Me"))
+		Debug.Log("Hello!");
+}
+
+
+
+2. 常用控件
+https://docs.unity3d.com/Manual/gui-Controls.html
+

@@ -1,0 +1,469 @@
+file:///D:/Unity/2019.4.21f1c1/Editor/Data/Documentation/en/ScriptReference/index.html  
+https://blog.uwa4d.com/archives/EDU_Primary.html
+https://space.bilibili.com/2033910/video   像素忍者
+
+实践 P210人物骨骼页面
+
+position指生成克隆的游戏对象的初始位置,类型是Vector3。
+rotation指生成克隆的游戏对象的初始角度,类型是Quaternion.
+
+
+                                    编辑器 
+
+
+变换切换：
+        Center:设置轴点再物体中心
+        pivot:使用物体本身的轴心
+世界坐标：整个场景的固定坐标，不随物体旋转而改变。
+本地坐标：物体自身坐标，随旋转而改变。
+GameObject 游戏对象
+Component  组件
+            Transform 变换组件：决定物体位置、旋转、缩放比。
+            Mesh Filter 网格过滤器：用于从资源中获取网格信息。
+            Mesh Renderer 网格渲染器：从网格过滤中获得几何形状，再根据变化组件定义的位置进行渲染。
+Material    
+            材质：物体的质地，指色彩、纹理、光滑度、透明度、反射率、发光率、发光度等。实际就是Shader的实例。
+            Shader着色器：专门用来渲染3D图形的技术，可以使纹理以某种方式展现。实际就是一段嵌入到渲染管线的程序，可以控制gpu运算图像的算法。
+            Texture纹理：附加到物体表面的贴图。
+属性
+    Rendering Mode
+            渲染模式
+                    --Opaque不透明,默认选项
+                    --Transparent透明,用于半透明和全透明物体,如玻璃
+                    -- Cutout镂空,用于完全透明或完全不透明物体,如栅栏  
+                    --Fade渐变,用于需要淡入淡出的物体
+    Main Maps   
+                Albedo基础贴图:决定物体表面纹理与颜色
+                Metallic金属:使用金属特性模拟外观
+                Specular镜面反射:使用镜面特性模拟外观
+                Smoothness光滑度:设置物体表面光滑程度
+                Normal Map法线贴图:描述物体表面凹凸程度
+                Emission自发光:控制物体表面自发光颜色和贴图
+                    --None不影响环境
+                    --Realtime实时动态改变
+                    --Backed烘焙生效
+                Tiling平铺:沿着不同的轴,纹理平铺个数
+                Offset偏移:滑动纹理
+渲染管线
+    绘制调用DrawCall:每次引擎准备数据并通知GPU的过程。通俗讲，每帧调用显卡渲染物体的次数。
+        顶点处理
+            接收模型顶点数据
+            坐标系转换
+            将3D图形的点转换为2D图形的点
+        图元装配
+            组装面：连接相邻的顶点，绘制为三角面
+        光栅化
+            计算三角面的上的像素，并为后面着色结算提供合理的插值参数。
+            在格子上面显示三角面的的像素
+        像素处理
+            对每个像素区域进行着色
+            写入到缓存
+        缓存
+            一个存储像素数据的内存块，最重要的缓存是帧缓存与深度缓存。
+            帧缓存:存储每个像素的色彩,即渲染后的图像。帧缓存常常在显存中, 显卡不断读取并输出到屏幕中。
+            深度缓存z- buffer :存储像素的深度信息,即物体到摄像机的距离。光栅化时便计算各像素的深度值,如果新的深度值比现有值更近，则像素颜色被写到帧缓存,并替换深度缓存。
+即时遮挡剔除
+    当物体被送进渲染流水线之前，将摄像机视角内看不到的物体进行剔除，从而减少了每帧渲染数据量，提高渲染性能。
+LOD
+    LOD技术指更具物体模型的节点在显示环境忠所处的位置和重要度，决定物体渲染的资源分配，降低非重要物体的面数和细节度，从而获得高效率的渲染运算。
+组件
+    Transform变换组件
+    Camera摄像机:向玩家捕获和显示世界
+    Flare Layer耀斑层:激活可显示光源耀斑
+    GUI Layer:激活可渲染二维GU元素
+    Audio Listener音频监听器:接收场景输入的音频源Audio Source并通过计算机的扬声器播放声音
+全局光照
+    直接光照
+        从光源直接发出的光,通过 Light组件实现
+        Type类型:灯光对象的当前类型 
+            --Directional Light平行光:平行发射光线,可以照射场景里所有物体,用于模拟太阳。
+            --Point Light点光源:在灯光位置上向四周发射光线,可以照射其范围内的所有对象,用于模拟灯泡。
+            --Spot Light聚光 灯:在灯光位置上向圆锥区域内发射光线,只有在这个区域内的物体才会受到光线照射,用于模拟探照灯。
+            --Area Light区域光:由一个面向一个方向发射光线,只X×照射该区域内物体,仅烘焙时有效,用在光线较为集中的区域。
+        Range范围:光从物体的中心发射的范围。仅适用于点光源和聚光灯 
+        Spot Angle聚光角度:灯光的聚光角度。只适用于聚光灯 
+        Color颜色:光线的颜色。
+        Intensity强度:光线的明亮程度解 
+        Culling Mask选择遮蔽层:选择要照射的层 Layer
+        Shadow Type阴影类型:Hard硬阴影、Soft软阴影
+            -- Strength硬度:阴影的黑暗程度。
+            -- Resolution分辨率:设置阴影的细节程度。
+            --Bias偏移:物体与阴影的偏移。
+        解通过Mesh Renderer组件启用禁用阴影
+            --Cast/ Receive Shadows当前物体是否投射/接收阴影
+            --Off不投射阴影,On投射阴影, Two Sided双面阴影, Shadows Only隐藏物体只投射阴影
+        阴影剔除:设置显示阴影的距离 Edit-> Project Settings->Quality->Shadows Disdance
+    间接光照
+        物体表面在接受光照后反射出来的光。
+        通过 Light组件中 Bounce Intensity反弹强度控制。
+        可以通过Scene面板 Irradiance模式查看间接光照。
+        注意:只有标记 Lightmaping Static的物体才能产生间接反弹光照
+    环境光照
+        作用于场景内所有物体的光照,通过 Environment Lighting中 Ambient控制。 
+        Ambient Source环境光源
+            --Skybox通过天空盒颜色设置环境光照
+            --Gradient梯度颜色解
+                Sky天空颜色、 Equator地平线颜色、 Ground地面颜色
+            -- Ambient Color纯色 
+        Ambient Intensity环 境光强度 
+        Ambient GI环境光GI模式
+            -- Realtime实时更新,环境光源会改变选择此项。 
+            Backed烘焙,环境光源不会改变选择此项
+    反射光照
+        根据天空盒或立方体贴图计算的作用于所有物体的反射效果,通过 Environment Lighting中 Reflection控制 
+        Reflection Source 反射源
+            --Skybox天空盒识讲 
+        Resolution分辨率 Compression是否压缩解
+            -- Custom自定义 
+        Cubemap立方体贴图 
+        Reflection Intensity反射强度 
+        Reflection Bounces使用 Reflection Probe后允许不同游戏对象间来回反弹的次数
+烘焙 Backed GI
+    当场景包含大量物体时,实时光照和阴影对游戏性能有很大影响。使用烘焙技术,可以将光线效果预渲染成贴图再作用到物体上模拟光影,从而提高性能。适用于在性能较低的设备上运行的程序
+    1.游戏对象设置为 Lightmaping Static
+    2.设置 LightBaking组件属性
+    3.启用Lighting面板的 Baked GI知·
+    4.点击 Build按钮。(如果勾选Auto编辑器会自动检测场讲景的改动修复光照效果)解 
+    Light组件 Baking属性:烘焙模式
+        -- Realtime仅实时光照时起作用。
+        -- Baked仅烘焙时起作用。
+        -- Mixed混合,烘焙与实时光照都起作用。
+    可以通过Scene面板 Baked模式查看光照贴图
+声音
+    Unity支持的音频文件格式:MP3、wav、aif等
+    声音分为2D、3D两类
+        3D声音:有空间感,近大远小。
+        2D声音:适合背景音乐。
+    在场景中产生声音,主要依靠两个重要组件:
+        Audio Listener音频监听器:接收场景中音频源 
+        Audio Source发出的声音,通过计算机的扬声器播放声音 
+        Audio Source音频源
+Audio Source
+    音频源
+        -- Audio Clip音频剪辑:需要播放的音频资源。
+        --Mute静音:如果启用,播放音频没有声音。
+        -- Play On Awake 唤醒播放:勾选后场景启动时自动播放。
+        --Loop循环:循环播放音频。- Volume音量:音量大小
+        -- Pitch音调:通过改变音调值调节音频播放速度。1是正常播放。
+        -- Stereo Pan:2D声音设置左右声道
+        -- Spatial Blend:2D与3D声音切换
+ 物理引擎
+    碰撞体
+            碰撞体是物理组件中的一类,每个物理组件都有独立的碰撞体组件,它要与刚体-起添加到游戏对象 上才能触发碰撞。如果两
+        个刚体相互撞在一起,只有两个对象是碰撞体时物理引擎才计算碰撞,在物理模拟中,没有碰撞体的刚体会彼此相互穿过。
+    刚体
+            为游戏对象添加Rigidbody(刚体)组件，可实现该对象在场景当中的物理交互.当游戏对象添加了刚体组件后，游戏对
+        象便可以接受外力与扭矩力.任何游戏对象只有在添加Rigidbody组建后才会受到重力影响.当需要通过脚本为游戏对象添加作用力以及
+        通过NVIDIA物理引擎与其他的游戏对象发生互动的运算时，都必须拥有刚体组件.
+    关节
+            关节组件属于物理组件中的一部分,是模拟物体与物体之间的一种连接关系,关节必须依赖于刚体组件。关节组件可添加到多
+        个游戏对象中,分别是Hinge Joint (铰链关节). Fixed Joint (固定关节)、Spring Joint (弹簧关节) 。
+    力场
+            力场是一种为刚体快速添加恒定作用力的方法,适用于类似火箭发射出来的对象,这些对象在起初并没有很大的速度但却是在
+        不断地加速。
+        在Unity中为游戏对象添加Constant Force组件,在Hierarchy视图中选择需要添加力场组件的对象,依次选择菜单栏中的
+        Component (组件)-→Physics (物理) - +Constant Force (力场)令。
+    布料
+            布料组件可以模拟类似布料的行为状态,比如飘动的旗帜、色身上的衣服等。下面介绍添加布料组件的方法。
+        首先选中一个游戏对象 ,然后依次选择菜单栏中的Component (组件)→Physics ( 物理)-→Cloth (布)命令,可为其添加
+        布料组件。
+
+
+
+                                            游戏脚本的生命周期
+
+    OnEnable    每当脚本启用时调用
+    ---------------------------------------------------------------------------------
+        唤醒：游戏物体被创建立即执行1次，无论脚本组件是否被激活执行，常用来游戏开始初始化
+    Awake()
+        一般用来创建变量，加载场景时运行,就是说在游戏开始之前初始化变量或游戏状态。
+    ---------------------------------------------------------------------------------
+        开始：游戏物体被创建，组件启用，才执行Start在Awake之后，Update之前调用
+    Start()
+         一般用来给变量赋值，用于游戏对象的初始化
+    ---------------------------------------------------------------------------------
+           渲染更新：脚本启用后，游戏场景渲染时，每一帧用Update方法，大概0.02s，根据每一帧的时间间隔计算。
+    Update()
+           一般用于非物理的计算，用于更新游戏场景和状态
+    ---------------------------------------------------------------------------------
+            固定更新:脚本启用后，0.02s调用一次，与物理引擎检测频率相同(固定时间被调用，适用于对游戏对象做物理操作)
+    FixedUpdate()
+            一般用于物理运动，用于物理状态的更新
+    ---------------------------------------------------------------------------------
+    LateUpdate()  延迟更新：在Update函数被调用后执行，适用于跟随逻辑
+    ---------------------------------------------------------------------------------
+    OnCollisionXXX碰撞：当满足碰撞条件是调用
+    ----------------------------------------------------------------------------
+    OnTriggerXXX触发：当满足触发条件时调用
+    --------------------------------------------------
+    OnDisable:在脚本每次樊激活后，执行一次
+
+
+
+                Reset                                     Reset只在编辑模式下执行，当脚
+                  │                                       本绑定在游戏对象时或者点击              编辑器
+                  │                                       Reset后调用
+                  ↓               
+                Awake             
+                OnEnable                                   Awake隔帧后会调用Start,并且只
+                Start                                     会调用一次，OnEnable每 次被激           初始化
+                  │                                       活时都会被调用
+｜──────────────→ │
+｜                ↓
+｜        →    FixedUpdate
+｜        │    yield WaitforFiexedUpdate                  FixedUpdate (固定更新)会按照
+｜        │    Internal Physics Update                    设置的时间固定频率来循环更新            物理
+｜        │    OnTriggerXXX触发：当满足触发条件时调用
+｜        │——  OnCollisionXXX碰撞：当满足碰撞条件是调用
+｜                │                        
+｜                ↓
+｜             OnMouseXXX                                                                      输入事件
+｜                │                        
+｜                │
+｜                ↓
+｜             Update
+｜             yield null                                 协程任务会在每一帧Update后
+｜             yield WaitFoeSeconds                       LateUpdate之前执行
+｜             yield WWW                                                                      游戏逻辑
+｜             yield StartCoroutine
+｜             Internal animation Update
+｜             LateUpdate
+｜                │
+｜                │
+｜                ↓
+｜            OnWillRenderObject
+｜            Onprecull                                  渲染之前与渲染之后的一组事件           场景渲染
+｜            OnBecameVisible
+｜            OnBecameInVisible
+｜            OnPreRender
+｜            OnRendeerImage
+｜                │
+｜                │
+｜                ↓
+｜            OnDrawGizmos                              OnDrawGizmos只在编辑器下生效，        Gizmos谊染
+｜                │                                     可以绘制一些辅助标记线框等
+｜                │
+｜                ↓
+｜            OnGUI←────                                OnGUI方法会每帧循环更 新，            GU谊染
+｜                │    ｜                               绘制基本GUI组件
+｜                │────｜
+｜               ↓
+｜            yield WaitForEndOfFrame                                                       每帧的最后
+｜                │
+｜                │
+｜                ↓
+  ────────    OnApplicationPause                        OnApplicationPause在游戏进入暂
+                  │                                     停或恢复暂停时调用
+                  │
+                  ↓
+              OnDisable                                 OnDisable在林用脚本时调用           脚本禁用/激活
+                                        常用API
+
+输入事件
+    OnMouseEnter鼠标移入:鼠标移入到当前Collider时调用。 
+    OnMouseOver鼠标经过:知识鼠标经过当前Collider时调用。 
+    OnMouseExit鼠标离开鼠标离开当前Collider时调用 
+    OnMouseDown鼠标按下鼠标按下当前 Collider时调用。 
+    OnMouseUp鼠标抬起:鼠标在当前Collider上抬起时调用        
+获取鼠标输入
+    当指定的鼠标按钮被按下时返回true 
+        bool result=Input. GetMouseButton();
+    在用户按下指定鼠标按键的第一帧返回true知识 
+        bool result= Input. GetMouse Button Down();
+    在用户释放指定鼠标按键的第一帧返回true 
+        bool result= Input. GetMouse ButtonUp();
+    按钮值设定:0对应左键,1对应右键,2对应中键
+获取键盘输入
+    当通过名称指定的按键被用户按住时返回true 
+        bool result=Input. GetKey(KeyCode.A);
+    当用户按下指定名称按键时的那一帧返回true 
+        bool result=Input. GetKeyDown(KeyCode.A);
+    在用户释放给定名称按键的那一帧返回true 
+        bool result=Input. GetKeyUp(KeyCode.A);
+
+
+                            c#
+                    Unity 5.X 2017标准教程
+8.3.2 Collision事件
+    ( 1 ) On Collision Enter函数:当碰撞体或者刚体与其他碰撞体或者刚体开始接触时调用,如图8.16所示。
+    ( 2 ) On Collision Stay函数:当碰撞体或者刚体与其他碰撞体或者刚体保持接触时调用,如图8.16所示。
+    ( 3) On Collision Exit函数:当碰撞体或者刚体与其他碰撞体或者刚体停止接触时调用,如图8.16所示。
+8.3.3 Trigger事件
+    ( 1 ) On Trigger Enter函数:当其他碰撞体进入触发器时调用,如图8.18所示。
+    (2) On Trigger Stay函数:当其他碰撞体停留触发器时调用,如图8.18所示。
+    ( 3) On Trigger Exit函数:当其他碰撞体离开触发器时调用,如图8.18所示。
+注意: Trigger事件和COllision事件的区别。
+    使用Trigger事件的时候,必须具备如下条件。
+    碰撞双方都要有碰撞,至少有一个有刚体组件,双方碰撞器至少有一个开启Is Trigger ,如图8.20所示。只要开启,就触发
+    Trigger事件,而不会触发Collision事件,但是会穿透另一个碰撞器。
+
+GameObject类
+8.4.1 Instantiate实例化
+    Instantiate ( ) 是Unity提供克隆游戏对象的方法,在游戏中应用比较广泛,而且提高了工作效率, -般常用于发射炮弹、AI敌
+    人等一些完全相同并且数量庞大的游戏对象。
+    ( 1 ) GameObject指生成克隆的游戏对象,也可以是Prefab预制体。
+    ( 2 ) position指生成克隆的游戏对象的初始位置,类型是Vector3。
+    ( 3 ) rotation指生成克隆的游戏对象的初始角度,类型是Quaternion。
+8.4.2 Destory销毁
+    Destory( )主要用于销毁游戏对象以及组件,但不会再引用那个被销毁的对象。
+    格式:
+    ①Destroy ( GameObject) ;
+    ②Destroy ( GameObject, time) ;
+8.4.4 Set Active显示/隐藏游戏对象
+    在Unity中,要激活游戏对象的方法就是使用Set Active( ) , 就是说通过此方法让游戏对象显示或者隐藏。
+    格式:
+    GameObject.Set Active (value) ;
+8.5 Transform类
+    场景里的每个对象都含有Transform ,用来存储并控制物体的位置、旋转和缩放。下面列出了Transform组件的成员变量,如图
+    8.25、图8.26和图8.27所示。
+    ( 1 ) transform.position :指定物体在世界坐标下的位置。
+    例: transform.position=new Vector3 (1, 0,0) ;
+    ( 2 ) transform.Translate :指物体相对位移的单位。
+    例: transform.Translate(1,0,0) ;
+    ( 3 ) transform.Rotate :指物体旋转。
+    例: transform.Rotate(0, 90 ,0) ;
+    ( 4 ) transform.euler Angles :指物体的角度。
+    例: transform.euler Angles=new Vector3(0, 90,0) ;
+    ( 5) transform.local Scale :指物体的缩放,注意的是缩放各个轴不能为0 ,否则会消失。
+    例: transform.local Scale= new Vector3 ( 2,1,1) ;
+
+                                    Unity 中的特定文件夹
+Assets
+    Assets 文件夹包含了Unity项目中使用到的说有资源问价。
+    新建Unity项目后，会自动创建该文件夹。
+    在Project 面板中，Assets作为根目录使用，并且不需要明确的指明，所有的API方法默认全部的资源都位于Assets文件夹内。
+Editor
+    放置到Editor文件夹中的脚本被看作编辑器脚本，而不是运行时脚本。
+    换句话说，也就是该文件内的脚本仅仅开发时在编辑器内运行，而不会被包含近build后的项目中。
+    只是在此文件夹内的脚本能够访问unity Editor的API,从而对编辑器进行扩展
+Resources
+    Resources 文件夹允许在脚本中通过文件的名称来访问对应的资源。
+    使用Resources.Load方法进行动态加载，放在这一文件夹的资源永远被打包含进build中，即使没有被调用。
+    一旦打包生成项目。Resources 文件夹内的所有资源均被打包进存放资源的archive中
+    提示：
+    当资源作为脚本变量访问时，这些资源在脚本被实例化后就被加载进内存若资源过大，可以将这些大资源放进该文件夹内进行动态加载；当不在使用这些资源时，调用Resources.UnloadUnusedAssets释放内存。
+Plugins
+    Plugins文件夹用于存放native插件，这些插件会被自动打包含进build中，在Windows平台下native 插件是dll文件，在MacOSX平台下，native 插件就bundle文件；在Linux平台下，native 插件是so文件
+    注意：
+    Plugins文件夹必须是Assets文件夹的直接子目录
+Gizmos
+    Unity 可以使用Gizmos类在Scene面板中绘制图像来显示设计细节，其中GGizmos.DrawIcon函数可以在场景窗口中绘制一个图标以标记特殊的对象和位置，而该函数所使用的图像文件位于Gizmos文件夹中
+StreamingAssets
+    当需要使用某种保留原格式的资源而不被unity进行特殊处理后的格式时，可将该资源放到StreamingAssets文件夹中。
+    该文件夹中资源将在游戏安装时原样复制到目标设备相应的文件夹下，无论任何平台都可以通过Application.streamingAssetsPath进行访问
+StanderdAssets
+    StanderdAssets 文件夹中的脚本最先被编译，这些脚本会根据语言被导出到AssemblyCsharp-firstpass或Assembly-UnityScript-firstpass项目中。
+    讲脚本放到此文件夹内，就可以用C#脚本来访问JS脚本或者其他语言的脚本
+隐藏文件夹
+    以“.” ’ ” '开头，以“~”结尾，以“cvs”命名或以".tmp"为扩展名的文件夹均为隐藏文件夹，隐藏文件夹中的资源不会被导入，脚本也不会被编译，Unity将会完全忽略此文件夹的存在
+
+
+                                c#
+一元运算符
+    自增（++）和自减（--）：使变量自身增加1或减少1.
+    int i=1;
+    i++;
+    Console.WriteLine(i); --2
+    前缀增量操作i++；返回的结果为自增以前的值。
+    前缀增量操作++i，返回的结果为自增以后的值。
+三元运算符
+    结构为：
+        数据类型 变量名 = 条件？结果1：结果2；
+    规则：
+        先计算bool条件，为true返回结果1，为false返回结果2.
+        string strResult = 1>2 ? "对了"："错了";
+
+
+                                单例模式
+    https://www.jianshu.com/p/97e4758ff4b4
+
+
+                                协同程序
+                                yield return
+
+
+                                3D数学基础
+
+
+                                unity编辑器
+ [HideInInspector]表示将原本显示在面板上的序列化值隐藏起来。
+ [SerializeField]表示将原本不会被序列化的私有变量和保护变量变成可以被序列化的，那么它们在下次读取的值就是你上次赋值的值。
+     1、如果a是公有的序列化变量。
+          （1）如果你想要在面板中看到变量a，那么用：
+                   public int a;
+          （2）如果你不想在面板中看到变量a，那么用：
+                   [HideInInspector]
+                   public int a;
+                这样a可以在程序中被代码赋值，但不会在面板中看到,也不能手动设置赋值。
+     2、如果a是私有的序列化变量，你想在面板中读取并赋值，那么用:
+            [SerializeField]
+            private int a;
+当Unity在运行时候的能在inspector（检视面板）上看到变量(类,结构等)时候,Unity已经发生了序列化;
+
+ (当你在inspector上操作数据的时候,Unity就会把这些数据序列化为文件,当游戏在运行的时候,Unity会反序列化这些文件来赋值给运行的对象,类似别的编程中通过构造函数初始化对象效果是一样的)
+
+Unity触发序列化的时候不仅仅是再inspector上修改数据,还有在 继承了MonoBehaviour的游戏对象通过克隆instantiate()方法的时候，它也会反序列化和序列化.
+
+Unity序列化的关键字是 Serializable 和 SerializeField.
+
+          Serializable: 用于 自定义的，非 abstract 的类. 结构体等 , 使这类型也能序列化
+          SerializeField: 用于 非public 类型(如private),  使非public 类型也能序列化
+          
+          https://blog.csdn.net/qq_15020543/article/details/82761416
+
+
+
+
+摄像机不对时可以用下面方法改变相机位置
+    GameObject-Align with View
+
+达内教学视频
+    xml
+        xml读取
+            Unity3D(2017高清)_P695
+            Unity3D(2017高清)_P696
+        更新、保存xml
+            Unity3D(2017高清)_P697
+        删除xml
+            Unity3D(2017高清)_P698
+        xml存放的位置
+            Unity3D(2017高清)_P699
+            StreamingAssets--文件夹
+        xml模板工具编写
+            Unity3D(2017高清)_P700
+            Unity3D(2017高清)_P701
+        xml模板的加载
+            Unity3D(2017高清)_P702
+        解决安卓端加载xml问题
+            Unity3D(2017高清)_P703
+    json
+        json使用
+            第两种生成方法+解析
+                Unity3D(2017高清)_P704
+            复合json+解析        
+                Unity3D(2017高清)_P705
+                Unity3D(2017高清)_P706
+    SQlist
+        SQlist代码块和使用
+            Unity3D(2017高清)_P707
+            Unity3D(2017高清)_P708
+        数据库的操作
+            Unity3D(2017高清)_P709
+            Unity3D(2017高清)_P710
+        数据库多查询+发布
+            Unity3D(2017高清)_P711
+        移动端数据库发布平台+拷贝数据库
+            Unity3D(2017高清)_P712
+        移动端数据库发布平台+拷贝数据库+json流量优化
+            Unity3D(2017高清)_P713
+                txt 无关紧要的数据，比如小说这些。
+                xml 小游戏数据，比如跑酷的排行、植物大战僵尸解锁
+                DB  数据多大，
+        SDK开发和调用
+            Unity3D(2017高清)_P714     我现在的SDK位置：D:/AndroidSDK
+                                        D:/Unity/2019.4.21f1c1/Editor/Data/PlaybackEngines/AndroidPlayer\SDK
+            Unity3D(2017高清)_P715
+            Unity3D(2017高清)_P716
+            Unity3D(2017高清)_P717
+    实战项目
+        Unity3D(2017高清)_P718

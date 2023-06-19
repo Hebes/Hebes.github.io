@@ -1,0 +1,9 @@
+1. EditorGUI 和 EditorGUILayout
+https://docs.unity3d.com/ScriptReference/EditorGUI.html
+https://docs.unity3d.com/ScriptReference/EditorGUILayout.html
+
+GUI       和 GUILayout			：游戏场景中的界面UI系统，要点击运行
+EditorGUI 和 EditorGUILayout	：是U3D编辑器的扩展，通常将其设置为EditorWindow窗口中的元素，通常用MenuItem来激活
+
+
+

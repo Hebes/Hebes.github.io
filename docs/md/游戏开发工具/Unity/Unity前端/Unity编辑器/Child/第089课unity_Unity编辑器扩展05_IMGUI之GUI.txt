@@ -1,0 +1,25 @@
+1. IMGUI = Immediate Mode GUI 
+https://docs.unity3d.com/Manual/GUIScriptingGuide.html
+https://docs.unity3d.com/Manual/gui-Basics.html
+https://docs.unity3d.com/Manual/gui-Extending.html
+https://docs.unity3d.com/ScriptReference/GUI.html   GUI API
+
+1) 通过纯代码方式驱动的一种GUI系统，为程序员准备的
+作用
+	创建一个调试用的工具；
+	脚本组件，创建自定义的属性面板
+	创建一个新的Editor 窗口和工具---来扩展我们的Unity自身的功能
+
+2）不推荐大家在游戏UI中使用本套GUI系统，推荐使用NGUI,UGUI等基于GameObject的UI系统
+3) 坐标系原点是屏幕的左上角
+
+void OnGUI() {
+	if (GUILayout.Button("Press Me"))
+		Debug.Log("Hello!");
+}
+
+
+
+2. 常用控件
+https://docs.unity3d.com/Manual/gui-Controls.html
+
