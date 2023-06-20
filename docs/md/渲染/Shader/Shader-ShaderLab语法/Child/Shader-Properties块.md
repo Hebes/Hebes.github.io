@@ -1,6 +1,20 @@
 # Shader-Properties块
 
+**[ShaderLab：Properties](<https://docs.unity.cn/cn/2018.4/Manual/SL-Properties.html>)**
+
 ## Unity Shader Properties块
+
+![1](../Image/Shader-Properties%E5%9D%97/1.png)
+
+Type类型
+
+* Color 颜色
+* Int 整数
+* Float 浮点数
+* Vector 四维向量
+* 20 纹理
+* 30 纹理
+* Cube 立方体纹理
 
 ```csharp
 Shader "Example" //路径和名称
