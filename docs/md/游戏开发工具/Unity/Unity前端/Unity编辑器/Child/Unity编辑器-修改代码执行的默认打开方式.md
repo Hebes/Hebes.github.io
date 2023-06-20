@@ -2,6 +2,8 @@
 
 **[Unity笔记：修改代码执行的默认打开方式](<https://blog.csdn.net/u012433546/article/details/129529019>)**
 
+**[怎么通过代码来打开一个项目文件](<https://bbs.csdn.net/topics/380135045>)**
+
 使用 **External Tools** 偏好设置可设置用于编写脚本、处理图像和进行源代码控制的外部应用程序。
 
 **External Script Editor：**选择 Unity 应使用哪个应用程序来打开脚本文件。Unity 会自动将正确的参数传递给内置支持的脚本编辑器。Unity 内置支持 Visual Studio Community、Visual Studio Code (VSCode) 和 JetBrains Rider。**Open by file extension** 选项会将设备的默认应用程序用于打开相关的文件类型。如果没有默认应用程序可用，设备会打开一个窗口，提示选择用于打开文件的应用程序。
