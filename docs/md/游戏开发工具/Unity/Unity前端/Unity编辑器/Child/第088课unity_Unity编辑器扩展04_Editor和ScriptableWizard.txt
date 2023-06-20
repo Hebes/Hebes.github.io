@@ -1,0 +1,279 @@
+1.Editor
+https://docs.unity3d.com/ScriptReference/Editor.html
+派生的自定义编辑器基类。使用这个为你的对象来创建自己的自定义检视面板和编辑器。
+注意：这是一个编辑器类，如果想使用它你需要把它放到工程目录下的Assets/Editor文件夹下。
+编辑器类在UnityEditor命名空间下。所以当使用C#脚本时，你需要在脚本前面加上 "using UnityEditor"引用。
+
+>>>>>>>>通常需要配合CustomEditor特性语法，附加该编辑器到一个自定义组件，通过使用CustomEditor属性。
+https://docs.unity3d.com/ScriptReference/CustomEditor.html
+
+
+Unity3d中自定义Editor，这个会让物体的脚本在Inspector视窗中，产生不同的视觉效果。
+什么意思，举个例子，比如游戏中我有个角色Player，他有攻击力，护甲，装备等属性。
+
+ 
+所以我定义一个脚本：MyPlayer.cs：
+
+using UnityEngine;
+using System.Collections;
+ 
+public class MyPlayer : MonoBehaviour
+{
+    public int armor = 100;
+    public int attack = 100;
+    public GameObject equipment;
+	
+    void Start()
+    {
+ 
+    }
+    void Update()
+    {
+ 
+    }
+}
+这边我定义了三个变量，分别是护甲、攻击力还有GameObject类型的装备。
+将这个脚本赋值给GameObject，可以看到Inspector视窗:
+ 
+ 
+ 
+那么，如果我想要修改下护甲，攻击力的"显示效果"，那么就可以自定义Editor：
+
+ 
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+
+[CustomEditor(typeof(MyPlayer))]
+public class MyPlayerEditor : Editor
+{ 
+    public override void OnInspectorGUI()
+    {
+        var target = (MyPlayer)(serializedObject.targetObject);
+        target.attack = EditorGUILayout.IntSlider("攻击力",target.attack,0,100);
+        ProgressBar(target.attack, "攻击力");
+ 
+        target.equipment =
+        EditorGUILayout.ObjectField("装备",target.equipment,typeof(GameObject));
+    }
+    private void ProgressBar(float value, string label)
+    {
+        Rect rect = GUILayoutUtility.GetRect(18, 18, "TextField");
+        EditorGUI.ProgressBar(rect, value, label);
+        EditorGUILayout.Space();
+    }
+}
+ 
+ 
+是不是一下子就好看了不少，操作性也变强了。这个就是编辑器的魅力所在。
+还有一种写法就是，通过SerializedObject的SerializedProperty
+我个人不是很推荐，因为更加复杂，但是效果跟上面第一种完全一样：
+
+
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+[CustomEditor(typeof(MyPlayer))]
+public class MyPlayerEditor2 : Editor
+{
+    SerializedProperty attack;
+    void OnEnable()
+    {
+        attack = serializedObject.FindProperty("attack");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.IntSlider(attack, 0, 100, new GUIContent("攻击力"));
+        ProgressBar(attack.intValue/100, "攻击力");
+        serializedObject.ApplyModifiedProperties();
+    }
+    private void ProgressBar(float value, string label)
+    {
+        Rect rect = GUILayoutUtility.GetRect(18, 18, "TextField");
+        EditorGUI.ProgressBar(rect, value, label);
+        EditorGUILayout.Space();
+    }
+}
+ 
+ 
+ 
+ 
+Variables变量
+
+target						// 受检查的对象。
+
+函数
+DrawDefaultInspectorDraw	//绘制内置检视面板。
+OnInspectorGUI 				执行这个函数来一个自定义检视面板。这个函数里面可为一个特定对象类的检视面板添加自己自定义GUI。
+Repaint 					重绘显示在这个编辑器的任何检视面板。
+HasPreviewGUI 				如果执行OnPreviewGUI，在子类重写这个方法。
+OnPreviewGUI 				如果你想在检视面板有一个预览字段，在子类执行这个方法。
+OnPreviewSettings 			如果你想在预览头显示自定义控件，重新这个方法。
+GetInfoString 				执行这个方法来显示资源信息在资源预览的顶部。
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+2.
+ScriptableWizard
+https://docs.unity3d.com/ScriptReference/ScriptableWizard.html
+
+向导式的编辑窗口：
+在很多情况下可能你都会需要一个有很多参数的编辑面板，然后在编辑结束后有一个按钮加以确认。这你不用自己来实现，
+UnityEditor提供了ScriptableWizard来帮助你快捷的进行开发。
+他是继承自EditorWindow的，所以他们的使用是很类似的。不过注意，当你点击确认按钮时，OnWizardCreate()会被调用。
+另外，ScriptableWizard.DisplayWizard 可以帮助你生成并显示出该窗口。
+
+
+从这个类派生来创建一个编辑器向导EditorWindow
+注意：这是一个编辑器类，如果想使用它你需要把它放到工程目录下的Assets/Editor文件夹下。
+编辑器类在UnityEditor命名空间下。所以当使用C#脚本时，你需要在脚本前面加上 "using UnityEditor"引用。
+
+编辑器向导通常使用菜单项打开。
+
+// C#
+// Creates a simple wizard that lets you create a Light GameObject
+// or if the user clicks in "Apply", it will set the color of the currently
+// object selected to red
+//创建一个简单的向导，来创建灯光物体
+//或如果用户点击"Apply"，它将设置当前选择的物体颜色为红色
+
+using UnityEditor;
+using UnityEngine;
+
+class WizardCreateLight : ScriptableWizard {
+	public float range = 500;
+	public Color color = Color.red;
+
+	[MenuItem ("GameObject/Create Light Wizard")]
+	static void CreateWizard () {
+		ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create", "Apply");
+		//If you don't want to use the secondary button simply leave it out:
+		//如果你不想使用辅助按钮可以忽略它：
+		//ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create");
+	}
+	void OnWizardCreate () {
+		GameObject go = new GameObject ("New Light");
+		go.AddComponent("Light");
+		go.light.range = range;
+		go.light.color = color;
+	}
+	void OnWizardUpdate () {
+		helpString = "Please set the color of the light!";
+	}
+	// When the user pressed the "Apply" button OnWizardOtherButton is called.
+	//当用户按下"Apply"按钮，OnWizardOtherButton被调用
+	void OnWizardOtherButton () {
+		if (Selection.activeTransform == null ||
+			Selection.activeTransform.light == null) return;
+		Selection.activeTransform.light.color = Color.red;
+	}
+}
+
+
+// Creates a simple wizard that lets you create a Light GameObject
+// or if the user clicks in "Apply", it will set the color of the currently
+// object selected to red
+
+using UnityEditor;
+using UnityEngine;
+
+public class WizardCreateLight : ScriptableWizard
+{
+    public float range = 500;
+    public Color color = Color.red;
+
+    [MenuItem("GameObject/Create Light Wizard")]
+    static void CreateWizard()
+    {
+        ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create", "Apply");
+        //If you don't want to use the secondary button simply leave it out:
+        //ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create");
+    }
+
+    void OnWizardCreate()
+    {
+        GameObject go = new GameObject("New Light");
+        Light lt = go.AddComponent<Light>();
+        lt.range = range;
+        lt.color = color;
+    }
+
+    void OnWizardUpdate()
+    {
+        helpString = "Please set the color of the light!";
+    }
+
+    // When the user presses the "Apply" button OnWizardOtherButton is called.
+    void OnWizardOtherButton()
+    {
+        if (Selection.activeTransform != null)
+        {
+            Light lt = Selection.activeTransform.GetComponent<Light>();
+
+            if (lt != null)
+            {
+                lt.color = Color.red;
+            }
+        }
+    }
+}
+
+
+Variables变量
+
+createButtonName	修改create button的名称
+otherButtonName		设置otherButtonName的名称
+helpString			允许您设置向导的帮助文本。
+errorString			允许您设置向导的错误文本。
+isValid				允许您启用和禁用向导创建按钮，以便用户不能点击。
+
+OnWizardUpdate 			当向导被打开或只要用户在向导改变了某些东西时就会被自动的调用。
+OnWizardCreate 			当用户在创建按钮上点击是调用。
+OnWizardOtherButton 	当用户在其他按钮点击时，此函数会被调用
+
+public static T DisplayWizard(string title);
+public static T DisplayWizard(string title, string createButtonName);
+public static T DisplayWizard(string title, string createButtonName, string otherButtonName);
+
+参数详解
+title				顶部的标题名称
+createButtonName	The text shown on the create button.
+otherButtonName			The text shown on the optional other button. Leave this parameter out to leave the button out.
+
+
+public static ScriptableWizard DisplayWizard(string title, Type klass, string createButtonName = "Create", string otherButtonName = "");
+参数详解
+
+title	The title shown at the top of the wizard window.
+klass	The class implementing the wizard. It has to derive from ScriptableWizard.
+createButtonName	The text shown on the create button.
+otherButtonName	The text shown on the optional other button. Leave this parameter out to leave the button out.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

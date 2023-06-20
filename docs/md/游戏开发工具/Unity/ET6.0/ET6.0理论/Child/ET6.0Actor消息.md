@@ -1,0 +1,10 @@
+# ET6.0Actor消息
+
+Actor模型
+actor之间的通讯方式是通过消息传递来实现.
+每个actor都配有一个邮箱,该邮箱将接收并缓存其他actor发过来的消息,actor从邮箱中按先入先出的顺序进行消息的处理.
+actor模型可以帮助消除共享状态,因为actor之间具有隔离性,内部可以安全的处理状态,不需要考虑多线程编程中的锁机制.
+actor可能会堵塞自己处理的逻辑,但actor不会堵塞自己运行的线程,所以多个actor可以同时进行消息的传递和消息事件处理.
+ET中Entity的InstanceId就是Actor的邮箱地址
+IdGenerater.cs
+outerMessage.proto

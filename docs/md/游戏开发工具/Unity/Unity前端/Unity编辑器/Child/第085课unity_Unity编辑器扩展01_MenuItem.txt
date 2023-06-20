@@ -1,0 +1,188 @@
+00a)为什么要自己定制Unity的编辑器？
+答：因为获得场景中的游戏物体或脚本
+this.gameObject.Find<xxx>
+this.gameObject.GetComponent<XXXX>() 
+等等。这种方法当然可以获取到所有的游戏物体或脚本，但是
+如果一个场景中有太多的游戏物体，那么获取到这些游戏物体gameObject将是一个
+体力活，没有任何的技术含量，所以我们可以通过一个工具（编辑器的扩展）
+来帮我们自动的完成生成对应的脚本或一些可以自动执行的工作
+
+
+00b) Unity工具是通过C#语言的 “特性” Attributes 来完成的
+[] 中括号语法
+利用了C#语言的反射和依赖注入特征来完成的一个语法功能
+
+00c）Unity 对于目录的命名有一些是保留的，如Editor
+
+
+https://docs.unity3d.com/ScriptReference/MenuItem-ctor.html
+https://docs.unity3d.com/ScriptReference/MenuItem.html
+
+
+
+
+1.MenuItem
+注意事项: MenuItem的函数必须是静态（static）函数
+
+第1个参数：用类Unix的path路径分隔方式来表示的菜单，可以设置为多级菜单
+快捷键
+% (ctrl on Windows, cmd on macOS), # (shift), & (alt).
+"MyMenu/Do Something _g"   快捷键g,字母签名添加下划线
+ "#LEFT" would map to shift+ left. 其他的一个键的支持情况: LEFT, RIGHT, UP, DOWN, F1 .. F12, HOME, END, PGUP, PGDN.
+ 快捷键和前面必须加入空格，否则无效 ("MyMenu/Do_g" won't be interpreted as hotkey, while "MyMenu/Do _g" will).
+_w 单一的快捷键 W   
+#w shift+w   
+%w ctrl+w   
+&w Alt+w
+
+第2个参数 true和false，控制菜单的是否被激活（在某种条件下）
+
+如果MenuItem的第2个参数设置为了true
+那么函数的返回值如果返回true，则本菜单被高亮激活
+如果返回值为false，本菜单就灰色，不可以被点击
+
+通常都是通过2个函数来完成的：
+1）菜单的名称必须完全一致
+2) 第1个函数的第2个参数必须是false或不写（因为默认值就是false），第2个函数的第2个参数必须是true
+3) 第2个函数的返回值必须是bool类型：如果函数的返回值如果返回true，则本菜单被高亮激活
+如果返回值为false，本菜单就灰色，不可以被点击
+4）2个函数必须都是static函数，但是函数名称可以不一致
+
+
+class SelectionActiveTransform : ScriptableObject {
+    
+	[MenuItem ("Example/Duplicate at Origin _d")]
+    static void DuplicateSelected() {
+        Instantiate(Selection.activeTransform, Vector3.zero, Quaternion.identity);
+    }
+
+    //The menu item will be disabled if nothing, is selected.
+    [MenuItem ("Example/Duplicate at Origin _d", true)]
+    static bool ValidateSelection() {
+        return Selection.activeTransform != null;		//Selection.activeTransform表示被选中的对象是一个激活的游戏物体
+    }
+}
+第3个参数：控制菜单的显示上下的顺序
+值越小越在上面显示，默认的优先级为1000
+如果想要系统添加下划线，相邻的2个菜单的优先级的大小要超过 >=11
+
+
++++++++++++++++++++++++++++++++++++++++++++
+	
+Project 视图右键添加：同Asset
+
+Hierachry层级视图添加右键：同Component
+
+顶部菜单栏
+	GameObjet
+		"GameObject/" 
+		
+	// Add a menu item to create custom GameObjects.
+    // Priority 1 ensures it is grouped with the other menu items of the same kind
+    // and propagated to the hierarchy dropdown and hierarch context menus.
+    [MenuItem("GameObject/MyCategory/Custom Game Object", false, 10)]
+    static void CreateCustomGameObject(MenuCommand menuCommand)
+    {
+        // Create a custom game object
+        GameObject go = new GameObject("Custom Game Object");
+        // Ensure it gets reparented if this was a context click (otherwise does nothing)
+        GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+        // Register the creation in the undo system
+        Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+        Selection.activeObject = go;
+    }
+
+场景视图：后续讲解
+
+属性Inspector视图
+	MenuItem("CONTEXT/脚本名称/菜单名称")
+
+	
+	
+	
+	
+	
+	
+2.	
+MenuCommand：
+MenuCommand 表示当前正在操作的组件
+通过context 属性获取到 对应的脚本对象
+	    // Add menu item
+    [MenuItem("CONTEXT/Rigidbody/Do Something")]
+    static void DoSomething(MenuCommand command)
+    {
+       // Rigidbody body = (Rigidbody)command.context;
+       Rigidbody body = (Rigidbody)command.context as  Rigidbody;
+        body.mass = 5;
+        Debug.Log("Changed Rigidbody's Mass to " + body.mass + " from Context Menu...");
+    }
+	
+		修改重力
+
+
+
+
+
+
+
+
+
+ContextMenu：
+属性面板中添加一个右键菜单，功能可以通过MenuItem("COMTEXT/组件名称/右键菜单完成")
+函数必须是 非静态的函数
+using UnityEngine;
+
+public class ContextTesting : MonoBehaviour
+{
+    /// Add a context menu named "Do Something" in the inspector
+    /// of the attached script.
+    [ContextMenu ("Do Something")]
+    void DoSomething ()
+    {
+        Debug.Log ("Perform operation");
+    }
+}
+与MenuItem的区别是，MenuItem是写在另外的脚本中，而ContextMenu是卸载当前脚本的；MenuItem的好处是可以通过通用的方式
+public ContextMenu(string itemName);
+public ContextMenu(string itemName, bool isValidateFunction);
+public ContextMenu(string itemName, bool isValidateFunction, int priority);   默认值1000000，越小，越在上面显示
+https://docs.unity3d.com/ScriptReference/ContextMenu-ctor.html
+
+
+
+
+ContextMenuItemAttribute
+
+https://docs.unity3d.com/ScriptReference/ContextMenuItemAttribute.html
+public ContextMenuItemAttribute(string name  菜单名称, string function 函数地址，函数名称);
+using UnityEngine;
+using System.Collections;
+
+public class ExampleClass : MonoBehaviour {
+    [ContextMenuItem("Reset", "ResetBiography")]
+    [Multiline(8)]
+    public string playerBiography = "";
+    void ResetBiography() {
+        playerBiography = "";
+    }
+}
+ContextMenuItem 使用的时候，需要用这个特性来写代码
+
+
+AddComponentMenu：	
+	using UnityEngine;
+
+[AddComponentMenu("Transform/Follow Transform")]
+public class FollowTransform : MonoBehaviour
+{
+}
+https://docs.unity3d.com/ScriptReference/AddComponentMenu-ctor.html
+允许将我们的脚本添加到Component菜单的定制位置，而不是"Component->Scripts" ，如NGUI就利用了这个特效，防止一堆的cs脚本代码
+public AddComponentMenu(string menuName);
+public AddComponentMenu(string menuName, int order);
+特例: menuName为空，则菜单中将 隐藏此脚本的显示
+	
+	
+	
+	
+	
