@@ -2,6 +2,8 @@
 
 **[【Unity后期渲染】Post Processing 后处理插件最全使用说明](<https://blog.csdn.net/yigiwoliao/article/details/122322223>)**
 
+**[Post-processing stack（后期处理栈）](<https://docs.unity.cn/cn/2017.4/Manual/PostProcessing-Stack.html>)**
+
 ## Post-Processing使用手册
 
 近段时间接触使用了Unity的后处理插件Post-Processing。  
