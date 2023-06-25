@@ -1,5 +1,7 @@
 # ET6.0实操-Actor消息
 
+![6](\../Image/ET6.0实操-Actor消息/6.png)
+
 ![1](\../Image/ET6.0实操-Actor消息/1.png)
 
 协议消息的定义,客户端对服务器的定义在OuterMessage.proto
