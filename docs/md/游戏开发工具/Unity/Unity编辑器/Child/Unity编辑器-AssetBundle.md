@@ -1,5 +1,9 @@
 # Unity功能-Assetbundles
 
+**[AssetBundle打包](<https://zhuanlan.zhihu.com/p/390842215>)**
+
+**[Unity3D中实现按资源名称自动化命名打包AssetBundle](<https://blog.csdn.net/ithot/article/details/75128535>)**
+
 ## Assetbundles
 
 文本格式:txt,xml    打包后的类型:TextAsset,数据保存在TextAsset的text属性中

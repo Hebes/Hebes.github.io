@@ -1,5 +1,17 @@
 # VSCode-自定义代码提示
 
+**[官方文档传送门👈](<https://code.visualstudio.com/docs/editor/userdefinedsnippets#_create-your-own-snippets>)**
+
+**[vscode自定义代码片段（代码提示）](<https://blog.csdn.net/cainiaoyihao_/article/details/115492570>)**
+
+**[[vscode自定义代码片段（代码提示）](https://blog.csdn.net/Silvester123/article/details/90376904)**
+
+**[[VSCode中markdown开启智能提示](https://blog.csdn.net/weixin_38680881/article/details/118165041)**
+
+**[VS Code配置markdown代码片段](<https://blog.csdn.net/qq_36171287/article/details/118732360>)**
+
+**[vscode markdown开启Snippets](<https://blog.csdn.net/yageeart/article/details/103097193>)**
+
 ## Markedwon启动智能提示
 
  输入setting
@@ -124,12 +136,3 @@ markdown.json
 win 下遇到的问题
 markdown文件在 windows 系统下貌似不会有代码提示，需要通过快捷键(默认 ctrl+i )触发
 
-**[官方文档传送门👈](<https://code.visualstudio.com/docs/editor/userdefinedsnippets#_create-your-own-snippets>)**
-
-## 参考网站
-
-**[vscode自定义代码片段（代码提示）](<https://blog.csdn.net/cainiaoyihao_/article/details/115492570>)**
-
-**[[vscode自定义代码片段（代码提示）](https://blog.csdn.net/Silvester123/article/details/90376904)**
-
-**[[VSCode中markdown开启智能提示](https://blog.csdn.net/weixin_38680881/article/details/118165041)**
