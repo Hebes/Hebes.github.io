@@ -50,6 +50,7 @@ def download(file_path, pic_url):
 def main():
     html_text = get_html(url)
     pic_list = parse_html(html_text)
+    os.removedirs("../pic/") # 删除目录
     os.makedirs("../pic/", exist_ok=True)  # 输出目录
     for pic_url in pic_list:
         file_name = pic_url.split("/")[-1]
