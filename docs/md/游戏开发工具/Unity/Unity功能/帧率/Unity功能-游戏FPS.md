@@ -97,3 +97,27 @@ public class FPSModule : MonoBehaviour
     }
 }
 ```
+
+## 方案三
+
+**[Unity FPS 计算](<https://blog.51cto.com/u_15127702/4443571>)**
+
+```C#
+using UnityEngine;
+using System.Collections;
+
+public class FPSDisplay : MonoBehaviour{
+
+ private float m_time = 0.0f;
+
+ void Update(){
+  m_time += (Time.unscaledDeltaTime - m_time) * 0.1f;
+  
+  float ms = m_time * 1000.0f;
+  float fps = 1.0f / m_time;
+  
+  Debug.Log($"{fps} FPS ({ms}ms)");
+ }
+
+}
+```
