@@ -1,5 +1,15 @@
 # ET6.0基础部分-目录结构
 
+## 理解版
+
+HotfixView，Hotfix这是个工程，其中区别在于
+model属于数据层。（说人话就是存放各种变量，字段的地方，能与服务器，机器人共用的）
+modelView也是数据层（也是存放各种变量，字段，和上面区别在于这边只存放跟unity深度绑定的，说人话就是专属客户端的。比如
+public UnityEngine.UI.Button loginBtn = null;）
+同理
+Hotfix属于逻辑层（就是编写各种逻辑的地方，能与服务器 机器人，共用的）
+HotfixView 就是专属于客户端的逻辑层（区别也是在于跟unity深度绑定的。比如点一个按钮要干嘛）
+
 ## **简单版:**
 
 1. `Unity.Mono：`所有冷更层代码
