@@ -17,7 +17,7 @@ headers = {
 }
 
 # 使用时修改url即可
-url = "https://www.cnblogs.com/shamoyuu/p/CropCamera.html"
+# url = "https://blog.csdn.net/qq_37254346/article/details/103963277"
 
 ImageTypeList = ["png", "jpg", "git"]
 
@@ -48,12 +48,16 @@ def download(file_path, pic_url):
 
 
 def main():
+    url = input('请输入需要下载图片的链接:')
     html_text = get_html(url)
     pic_list = parse_html(html_text)
-    os.removedirs("../pic/") # 删除目录
+    # os.removedirs("../pic/") # 删除目录
     os.makedirs("../pic/", exist_ok=True)  # 输出目录
+    number = 1
     for pic_url in pic_list:
         file_name = pic_url.split("/")[-1]
+        file_name = str(number) + "." + file_name.split(".")[1]
+        number += 1
         file_path = "../pic/" + file_name
         print("下载路径是:"+file_path)
         download(file_path, pic_url)
