@@ -12,8 +12,8 @@ Type类型
 * Int 整数
 * Float 浮点数
 * Vector 四维向量
-* 20 纹理
-* 30 纹理
+* 2D 纹理
+* 3D 纹理
 * Cube 立方体纹理
 
 ```csharp
@@ -35,7 +35,7 @@ Shader "Example" //路径和名称
         // 四维向量：创建4个栏位，让用户可以填入相应的浮点数，代表一个Vecto4
         _Vector("Vector",Vector) = (1,2,3,4)
         // 创建一个图片选择框，可以让用户选择贴图
-        _2D("Texture",2D) = "White" {
+        _2D("Texture",2D) = "White" {}
         // 矩形纹理：创建一个non-power-of-2贴图选择框，功能基本跟2D想同
         _Rect("Rect",Rect) = "White" {}
         // 立方体贴图纹理：创建一个选择Cubmap的框
