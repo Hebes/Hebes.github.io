@@ -2,7 +2,6 @@
 
 **[Unity中EventTrigger的几种使用方法](<https://blog.csdn.net/qq_45152631/article/details/107388530>)**
 
-
 ```C#
 /// <summary>
 /// 扩展的方法
@@ -26,7 +25,7 @@ public static class ExtensionMethods
 ```
 
 ```C#
-go.GetComponent<Button>().GetComponent<EventTrigger>()
+go.GetComponent<EventTrigger>()
     .AddListener(EventTriggerType.PointerEnter, (PointerEventData eventData) =>
     {
         Debug.Log($"当前Enter的物体：{p.seriseNo}");
