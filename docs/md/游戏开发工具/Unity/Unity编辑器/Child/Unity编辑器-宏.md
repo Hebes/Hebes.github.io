@@ -2,6 +2,8 @@
 
 **[如何通过代码在Unity中设置自定义宏信息](<https://blog.csdn.net/qq_42898629/article/details/86632116>)**
 
+**[Unity 之 强大的宏定义](<https://czhenya.blog.csdn.net/article/details/86499893>)**
+
 ## 打包尽量别输出Log,别拼接字符串
 
 Unity EDITOR_LOG.输出会产生GC.拼接字符串也会产生.开发时用宏log.打包时去掉宏
