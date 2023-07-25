@@ -41,3 +41,7 @@ ps:上面两种错误都是同一种问题造成的，报错不一样的原因�
 因为该方法时需要被调用的，然后测试的时候出现了以下问题
 error CS0103: The name 'EditorLoadAsset' does not exist in the current context
 出现问题的原因是调用此方法的地方未用#if #endif包含进去，在正式运行状态下，他会认为该方法不存在，找不到该方法导出出现报错。所以要将调用该方法的地方也要用#if #endif包括进来，让正式运行状态下也不用执行调用该方法的语句
+
+## Cannot load asset bundle file using LoadRawFileAsync method
+
+修改yooaseet PackRule 为 PackRawFile 目录下的资源文件会被处理为原生资源包

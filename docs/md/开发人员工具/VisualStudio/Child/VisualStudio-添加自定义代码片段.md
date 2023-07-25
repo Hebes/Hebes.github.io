@@ -1,5 +1,6 @@
 # VisualStudio-添加自定义代码片段
 
+工具 -> 代码片段管理器
 ![1](\../Image/VisualStudio-添加自定义代码片段/1.png)
 
 ![2](\../Image/VisualStudio-添加自定义代码片段/2.png)
