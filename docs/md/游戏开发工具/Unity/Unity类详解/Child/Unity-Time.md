@@ -2,6 +2,8 @@
 
 **[详解Unity中Time类的用法与深入探究](<https://blog.csdn.net/weixin_43147385/article/details/127537231>)**
 
+**[Unity 游戏暂停和继续](<https://www.cnblogs.com/Haha1999/p/13211876.html>)**
+
 1. Time.time:（只读）表示游戏开始到现在的时间,若游戏暂停则停止计算
 1. Time.timeSinceLevelLoad:（只读）表示从当前Scene开始到目前为止的时间,游戏暂停而停止
 1. Time.deltaTime:（只读）表示从上一帧到当前帧的时间,以秒为单位
