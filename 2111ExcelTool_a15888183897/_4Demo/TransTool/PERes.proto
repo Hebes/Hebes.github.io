@@ -1,0 +1,44 @@
+syntax = "proto2";
+package PERes;
+
+message ResSkillList{
+    repeated ResSkill lst = 1;
+}
+
+message ResSkill{
+    required int32 ID = 1;
+    required string name = 2;
+    required int32 damagetype = 3;
+    repeated int32 cooldown = 4;
+    required string des = 5;
+}
+
+message ResFubenList
+{
+    repeated ResFuben lst = 1;
+}
+message ResFuben
+{
+    required int32 ID = 1;
+    required string name = 2;
+    required int32 type = 3;
+    required int32 mapid = 4;
+    repeated DropItem drop = 5;
+}
+message DropItem
+{
+    required int32 id  = 1;
+    required int32 num   = 2;
+}
+
+message ResGoodsList
+{
+    repeated ResGoods lst = 1;
+}
+
+message ResGoods{
+    required int32 ID = 1;
+    required string name = 2;
+    required int32 type = 3;
+    required string des = 4;
+}
