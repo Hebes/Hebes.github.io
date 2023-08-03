@@ -85,3 +85,11 @@ public static void SetCursor(Texture2D texture, Vector2 hotspot, CursorMode curs
 ## 写在最后
 
 所有分享的内容均为作者在日常开发过程中使用过的各种小功能点，分享出来也变相的回顾一下，如有写的不好的地方还请多多指教。Demo源码会在之后整理好之后分享给大家。欢迎大家相互学习进步。
+
+
+有时候使用了第一人称控制器再跳转回开始界面场景会找不到鼠标，在开始场景的界面start中写下这两句
+
+```CSharp
+Cursor.visible = true;
+Cursor.lockState = 0;
+```
