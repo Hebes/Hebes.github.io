@@ -81,5 +81,3 @@ https://skierhou.github.io/blog/2021/03/01/Unity/GameFramework/GF1/
 <https://ming-e.space/>
 <https://blog.csdn.net/qq992817263/category_2747763.html>
 <https://www.zhihu.com/people/niuxingxing>
-
-红点系统 <https://zhuanlan.zhihu.com/p/86069641>
