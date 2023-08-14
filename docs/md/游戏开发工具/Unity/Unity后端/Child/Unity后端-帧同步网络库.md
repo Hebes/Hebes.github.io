@@ -253,9 +253,3 @@ namespace KCPTest
 创建C#类库 Standard
 
 ![4](\../Image/Unity后端-帧同步网络库/4.png)
-
-
-## 参考
-
-来自
-> 齐齐课
