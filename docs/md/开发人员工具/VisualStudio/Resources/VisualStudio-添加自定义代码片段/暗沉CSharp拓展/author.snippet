@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2023/CodeSnippet">
 	<CodeSnippet Format="1.0.0">
 		<Header>
 			<Title>脚本提示</Title>
@@ -7,32 +7,33 @@
 			<Description>暗沉的脚本提示</Description>
 			<Author>暗沉</Author>
 			<SnippetTypes>
-				<SnippetType>Expansion</SnippetType>
-				<SnippetType>SurroundsWith</SnippetType>
+				<SnippetType>脚本作用提示</SnippetType>
 			</SnippetTypes>
 		</Header>
 		<Snippet>
 			<Declarations>
-				
 				<Literal>
 					<ID>author</ID>
 					<ToolTip>作者</ToolTip>
 					<Default>暗沉</Default>
 				</Literal>
-				
+				<Literal>
+					<ID>function</ID>
+					<ToolTip>请填写功能描述</ToolTip>
+					<Default>请填写功能描述</Default>
+				</Literal>
 			</Declarations>
 			<Code Language="csharp">
-				<![CDATA[/*--------脚本描述-----------
-				
-电子邮箱：
-	1607388033@qq.com
-作者:
-	暗沉
-描述:
-	$selected$$end$
-	
------------------------*/
-]]>
+				<![CDATA[
+				/*--------脚本描述-----------
+				电子邮箱：
+					1607388033@qq.com
+				作者:
+					$author$
+				描述:
+					$function$
+				-----------------------*/$end$
+				]]>
 			</Code>
 		</Snippet>
 	</CodeSnippet>

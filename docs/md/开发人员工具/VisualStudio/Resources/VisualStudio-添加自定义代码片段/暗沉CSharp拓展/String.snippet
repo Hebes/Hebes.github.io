@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2017/CodeSnippet">
+        <CodeSnippet Format="1.0.0">
+            <Header>
+                <Title>ACString</Title>
+                <Shortcut>s</Shortcut>
+                <Description>暗沉字符串快捷提示</Description>
+                <Author>暗沉</Author>
+                <SnippetTypes>
+                    <SnippetType>Hint</SnippetType>
+                </SnippetTypes>
+            </Header>
+            <Snippet>
+                <Declarations>
+					<Literal>
+                        <ID>Content</ID>
+                        <ToolTip>消息</ToolTip>
+                        <Default>需要打印的消息</Default>
+                    </Literal>
+                    <Literal>
+                        <ID>Content1</ID>
+                        <ToolTip>消息1</ToolTip>
+                        <Default>需要打印的消息1</Default>
+                    </Literal>
+                </Declarations>
+                <Code Language="csharp">
+              <![CDATA[$$"$Content${$Content1$}";$end$]]>
+			</Code>
+            </Snippet>
+        </CodeSnippet>
+    </CodeSnippets>

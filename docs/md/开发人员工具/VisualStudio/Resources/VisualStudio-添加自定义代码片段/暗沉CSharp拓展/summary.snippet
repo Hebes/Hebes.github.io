@@ -2,26 +2,25 @@
     <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2017/CodeSnippet">
         <CodeSnippet Format="1.0.0">
             <Header>
-                <Title>summary标准注释</Title>
+                <Title>summary自定义注释</Title>
                 <Shortcut>su</Shortcut>
-                <Description>summary标准注释</Description>
+                <Description>summary自定义注释</Description>
                 <Author>暗沉</Author>
                 <SnippetTypes>
-                    <SnippetType>Expansion</SnippetType>
+                    <SnippetType>Hint</SnippetType>
                 </SnippetTypes>
             </Header>
             <Snippet>
                 <Declarations>
 					<Literal>
-                        <ID>Author</ID>
-                        <ToolTip>作者</ToolTip>
-                        <Default>xlwang</Default>
+                        <ID>MethodPrompt</ID>
+                        <ToolTip>方法提示</ToolTip>
+                        <Default>请输入方法提示</Default>
                     </Literal>
                 </Declarations>
                 <Code Language="csharp">
-              <![CDATA[      
-               /// <summary> $end$ </summary>]]>
-                </Code>
+              <![CDATA[/// <summary> $MethodPrompt$ </summary>$end$]]>
+			</Code>
             </Snippet>
         </CodeSnippet>
     </CodeSnippets>
