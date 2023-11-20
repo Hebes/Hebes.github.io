@@ -1,0 +1,33 @@
+/// <summary>
+/// 帧率/一秒多少帧
+/// </summary>
+public const int FrameSpeed = 20;
+
+/// <summary>
+/// 一帧的时间
+/// </summary>
+public const float FrameTime = 1.0f / FrameSpeed;
+
+public SpriteRenderer SpriteRenderer { get; protected set; }
+
+/// <summary>
+/// 精灵的阴影渲染器
+/// </summary>
+public SpriteRenderer SpriteShadowRenderer { get; protected set; }
+
+protected Sprite[] sprites { get; set; }
+
+/// <summary>
+/// 当前动画帧
+/// </summary>
+public int nowIndex { get; protected set; }
+
+/// <summary>
+/// 当前帧走过的时间
+/// </summary>
+protected float Time { get; set; }
+
+/// <summary>
+/// 当前动画的总帧数
+/// </summary>
+public int FrameCount => sprites.Length - 1;

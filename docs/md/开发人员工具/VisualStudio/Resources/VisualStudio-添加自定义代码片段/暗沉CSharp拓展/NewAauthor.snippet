@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2023/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>脚本提示</Title>
+			<Shortcut>nauthor</Shortcut>
+			<Description>暗沉的脚本提示</Description>
+			<Author>暗沉</Author>
+			<SnippetTypes>
+				<SnippetType>脚本作用提示</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>author</ID>
+					<ToolTip>作者</ToolTip>
+					<Default>暗沉</Default>
+				</Literal>
+				<Literal>
+					<ID>function</ID>
+					<ToolTip>请填写功能描述</ToolTip>
+					<Default>请填写功能描述</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp">
+				<![CDATA[
+				/*--------脚本描述-----------
+				
+				描述:
+					$function$
+
+				-----------------------*/$end$
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
