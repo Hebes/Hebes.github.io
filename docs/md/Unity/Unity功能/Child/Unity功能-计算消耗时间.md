@@ -9,5 +9,15 @@ DateTime beforeDT = DateTime.Now;
 //todo这里填写过程
 DateTime afterDT = DateTime.Now;
 TimeSpan ts = afterDT.Subtract(beforeDT);
-print($"消耗的时间: {ts.TotalMilliseconds}ms");
+print($"消耗的时间: {ts.TotalMilliseconds}毫秒");
+```
+
+``` C#
+Stopwatch sw = new Stopwatch();
+sw.Start();
+//todo这里填写过程
+DateTime afterDT = DateTime.Now;
+TimeSpan ts = afterDT.Subtract(beforeDT);
+sw.Stop();
+UnityEngine.Debug.Log($"当前消耗的时间是：{sw.ElapsedMilliseconds}毫秒等于{sw.ElapsedMilliseconds / 1000}秒");
 ```
