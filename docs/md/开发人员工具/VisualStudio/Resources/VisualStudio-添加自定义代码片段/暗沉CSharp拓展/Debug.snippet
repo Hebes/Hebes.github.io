@@ -20,11 +20,11 @@
                     <Literal>
                         <ID>Content1</ID>
                         <ToolTip>消息1</ToolTip>
-                        <Default>需要打印的消息1</Default>
+                        <Default>需要打印的消息1 {$Content1$}</Default>
                     </Literal>
                 </Declarations>
                 <Code Language="csharp">
-              <![CDATA[UnityEngine.Debug.Log($$"$Content${$Content1$}");$end$]]>
+              <![CDATA[Debug.Log($$"$Content$");$end$]]>
 			</Code>
             </Snippet>
         </CodeSnippet>
