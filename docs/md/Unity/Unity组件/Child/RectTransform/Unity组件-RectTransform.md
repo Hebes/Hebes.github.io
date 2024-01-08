@@ -2,6 +2,8 @@
 
 来源链接 <https://blog.csdn.net/xzqsr2011/article/details/104036830>
 
+<https://www.cnblogs.com/guangzhiruijie/p/15835916.html>
+
 ## 注意事项
 
 在阅读本文之前，需要首先掌握如何在 Inspector 面板中设置 RectTransform。本文起到将代码与 Inspector 面板对应之用。
