@@ -46,6 +46,8 @@ def download(file_path, pic_url):
     with open(file_path, "wb") as f:
         f.write(r.content)
 
+def GetDesktopPath():
+    return os.path.join(os.path.expanduser("~"), 'Desktop')
 
 def main():
     url = input('请输入需要下载图片的链接:')
@@ -58,7 +60,7 @@ def main():
         file_name = pic_url.split("/")[-1]
         file_name = str(number) + "." + file_name.split(".")[1]
         number += 1
-        file_path = "../pic/" + file_name
+        file_path = GetDesktopPath()+"/pic/" + file_name        #"../pic/" + file_name
         print("下载路径是:"+file_path)
         download(file_path, pic_url)
 
