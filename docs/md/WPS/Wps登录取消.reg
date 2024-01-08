@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\kingsoft\Office\6.0\plugins\officespace\flogin]
+"enableForceLoginForFirstInstallDevice"="false"
