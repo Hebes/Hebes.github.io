@@ -1,45 +1,28 @@
 # Shader-数据类型
 
-**[Unity Shader（四） 数据类型](<https://blog.csdn.net/qq_39091751/article/details/105035654>)**
-
-## Unity Shader（四） 数据类型
+**[Unity Shader（四） 数据类型](https://blog.csdn.net/qq_39091751/article/details/105035654)**
 
 ## Cg/HLSL中的数据类型
 
 几种常见的数据类型：
 
-1：float、half、fixed（三个都是浮点型  只是精度不一样）
+1. float、half、fixed（三个都是浮点型  只是精度不一样）
+2. integer（整型）
+3. sampler2D（2D纹理）
+4. samplerCUBE（3D纹理）
 
-2：integer（整型）
++ float 高精度类型，32位，通常用于世界坐标下的位置，纹理UV，或涉及复杂函数的标量计算，如三角函数、幂运算等。
++ half 中精度类型，16位，数值范围为[-60000,+60000]，通常用于本地坐标下的位置、方向向量、HDR颜色等。
++ fixed 低精度类型，11位，数值范围为[-2,+2],通常用于常规的颜色与贴图，以及低精度间的一些运算变量等。
 
-3：sampler2D（2D纹理）
-
-4：samplerCUBE（3D纹理）
-
-+ float
-
-高精度类型，32位，通常用于世界坐标下的位置，纹理UV，或涉及复杂函数的标量计算，如三角函数、幂运算等。
-
-+ half
-
-中精度类型，16位，数值范围为\[-60000,+60000\]，通常用于本地坐标下的位置、方向向量、HDR颜色等。
-
-+ fixed
-
-低精度类型，11位，数值范围为\[-2,+2\],通常用于常规的颜色与贴图，以及低精度间的一些运算变量等。
-
-> 在PC平台不管你Shader中写的是half还是fixed，统统都会被当作float来处理。half与fixed仅在一些移动设备上有效。 
+> 在PC平台不管你Shader中写的是half还是fixed，统统都会被当作float来处理。half与fixed仅在一些移动设备上有效。
 > 比较常用的一个规则是，除了位置和坐标用float以外，其余的全部用half。主要原因也是因为大部分的现代GPU只支持32位与16位，也就是说只支持float和half，不支持fixed。
 
-+ interger
-  
-整型类型，通常用于循环与数组的索引。
++ interger 整型类型，通常用于循环与数组的索引。
 
 > 在 Direct3D 9 和 OpenGL ES 2.0平台上整型可能会被直接用浮点数来处理，在Direct3D 11、OpenGL ES 3等现代GPU上可以正确的以整型类型来处理。
 
-+ sampler2D、sampler3D与samplerCUBE
-
-纹理，默认情况下在移动平台纹理会被自动转换成低精度的纹理类型，如果你需要中精度的或者高精度的需要用以下方式来声明：
++ sampler2D、sampler3D与samplerCUBE 纹理，默认情况下在移动平台纹理会被自动转换成低精度的纹理类型，如果你需要中精度的或者高精度的需要用以下方式来声明：
 
 sampler2D\_half(中精度2D纹理)
 

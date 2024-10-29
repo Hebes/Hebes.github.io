@@ -8,3 +8,4 @@
 - [Shader-描边](md/Python/Child/Shader-描边.md)
 - [Shader-基本结构](md/Python/Child/Shader-基本结构.md)
 - [Shader-ShaderLab语法](md/Python/Child/Shader-ShaderLab语法.md)
+- [Properties块](md/渲染/Shader/Shader-ShaderLab语法/Shader-Properties块/Shader-Properties块.md)

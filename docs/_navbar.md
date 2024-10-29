@@ -3,7 +3,7 @@
   
 <!-- * [切换主题](/md/其他/切换主题.md) -->
 
-- 关于Windows
+<!-- - 关于Windows
 
   - [Windows工具](/md/Windows工具/_sidebar.md)
   - [WIndows批处理](/md/WIndows批处理/_sidebar.md)
@@ -49,7 +49,7 @@
 - 关于Idea
 
   - [VSCode](/md/VSCode配置/VSCode配置.md)
-  - [VisualStudio](/md/VisualStudio/_sidebar.md)
+  - [VisualStudio](/md/VisualStudio/_sidebar.md) -->
 
 - [返回主页](/README.md)
 
